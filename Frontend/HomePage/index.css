@@ -1,0 +1,7 @@
+.nav{
+    display: grid;
+    grid-template-columns: 6fr 1fr 1fr 1fr 1fr ;
+    width: 100%;
+    padding-top: 20px;
+    background-color: transparent;
+}

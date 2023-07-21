@@ -5,8 +5,9 @@ require('dotenv').config()
 const {classesRouter} = require('./routes/class.route')
 const { userRoute } = require("./routes/user.route");
 const { connection } = require("./dataBase/dataBase");
+const { redisClient } = require('./dataBase/redis');
+const { trainerRouter } = require("./routes/tainer.route");
 const { sendEmail } = require("./mailer/mailer");
-const { redisClient } = require('./dataBase/redis')
 
 const app = express();
 app.use(express.json());
@@ -22,6 +23,7 @@ app.get("/", async (req, res) => {
 
 
 app.use("/user", userRoute);
+app.use('/trainer', trainerRouter)
 app.use('/classes', classesRouter)
 
 

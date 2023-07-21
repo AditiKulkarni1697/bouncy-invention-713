@@ -12,9 +12,9 @@ const classesSchema = mongoose.Schema({
     image:String,
     trainerID:{type:String,required:true},   
     trainerName:String,   
-    classDate:String,
-    classTime:String,             
-    clients:[{type:String}]
+    classDate:Date,
+    classTime:Date,             
+    users:[{type:String}]
 })
 
 const ClassesModel = mongoose.model("class",classesSchema);

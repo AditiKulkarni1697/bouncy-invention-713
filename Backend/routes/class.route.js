@@ -18,7 +18,7 @@ classesRouter.get("/", async (req,res)=>{
 classesRouter.get("/users/:userID", async (req,res)=>{
     let userID=req.params.userID
     try{
-        let classes = await ClassesModel.find(({ clients : { $in : userID }}));
+        let classes = await ClassesModel.find(({ users : { $in : userID }}));
         return res.status(200).send({message:"classes Data Fetched",classes})
     }catch(error){
         return res.status(400).send({message:"Something went wrong",error:error.message})
@@ -59,15 +59,6 @@ classesRouter.delete("/delete/:classID", async (req,res)=>{
     }
 })
 
-
-// classesRouter.patch("/updateTest", async (req,res)=>{
-//     try{
-//         let classes = await ClassesModel.updateMany({venue:"online"},{locationOrLink:"https://us06web.zoom.us/j/9314210793"});        
-//         res.status(200).send({message:"class data updated"})
-//     }catch(error){
-//         res.status(400).send({message:"Something went wrong",error:error.message})
-//     }
-// })
 
 
 module.exports= {classesRouter}

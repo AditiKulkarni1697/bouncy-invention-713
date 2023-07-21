@@ -2,8 +2,11 @@ const express = require("express");
 const cors = require("cors");
 require('dotenv').config()
 
+const {classesRouter} = require('./routes/class.route')
 const { userRoute } = require("./routes/user.route");
 const { connection } = require("./dataBase/dataBase");
+const { redisClient } = require('./dataBase/redis');
+const { trainerRouter } = require("./routes/tainer.route");
 const { sendEmail } = require("./mailer/mailer");
 
 const app = express();
@@ -18,15 +21,17 @@ app.get("/", async (req, res) => {
   });
 });
 
-app.use("/user", userRoute);
 
+app.use("/user", userRoute);
+app.use('/trainer', trainerRouter)
+app.use('/classes', classesRouter)
 
 
 app.listen(process.env.server_port , async () => {
   try {
     await connection
     console.log("connected to the Database")
-    console.log(`server is running on "" http://localhost:${process.env.server_port}""`)
+    console.log(`server is running on "http://localhost:${process.env.server_port}"`)
   } catch (error) {
     console.log(error)
   }

@@ -1,3 +1,4 @@
+
 const express = require ('express')
 const { UserModel, TrainerModel } = require('../models/user.model')
 const { ClassesModel } = require('../models/class.model')
@@ -49,8 +50,14 @@ trainerRouter.post("/register", async (req,res)=>{
     }catch(error){
         console.log(error)
         return res.status(400).send({error:error, message : 'something went wrong' , isOk : false})
+
     }
-})
+  } catch (error) {
+    res.status(400).send({ error: error, message: "something went wrong" });
+    console.log(error);
+  }
+});
+
 
 trainerRouter.post('/login', async(req,res)=>{
     const {email, password} = req.body
@@ -87,24 +94,50 @@ trainerRouter.get('/:trainerID', async (req, res)=>{
         else return res.status(400).send({message : "something went wrong" , isOk :false})
     } catch (error) {
        return res.status(400).send({message : "something went wrong", error : error, isOk : false})
+
     }
-})
+  } catch (error) {
+    res.status(400).send({ message: "someting went wrong", error: error });
+  }
+});
 
+trainerRouter.get("/:trainerID", async (req, res) => {
+  try {
+    let id = req.params.trainerID;
+    const trainer = await TrainerModel.findOne({ _id: id });
+    if (trainer)
+      return res
+        .status(200)
+        .send({
+          message: "Trainer details feteched successfully.",
+          Trainer: trainer,
+        });
+    else return res.status(400).send({ message: "something went wrong" });
+  } catch (error) {
+    return res
+      .status(400)
+      .send({ message: "something went wrong", error: error });
+  }
+});
 
-trainerRouter.post("/createClass", async (req,res)=>{
-    let Class = req.body;
-    Class.seatOccupied=0;
+trainerRouter.post("/createClass", async (req, res) => {
+  let Class = req.body;
+  Class.seatOccupied = 0;
 
-    try{
-        let classes = new ClassesModel(Class);
-        await classes.save();
-        await TrainerModel.findByIdAndUpdate({_id:Class.trainerID},{ $push: { classes: classes._id } });
-        let trainer = await TrainerModel.findById(classes.trainerID)
-        let classDetails = `<h1>Hello ${trainer.name}</h1>
+  try {
+    let classes = new ClassesModel(Class);
+    await classes.save();
+    await TrainerModel.findByIdAndUpdate(
+      { _id: Class.trainerID },
+      { $push: { classes: classes._id } }
+    );
+    let trainer = await TrainerModel.findById(classes.trainerID);
+    let classDetails = `<h1>Hello ${trainer.name}</h1>
         <h2>Here are your session details:-<h2> 
         <p>Class title : ${classes.title} <br>
             Class link : ${classes.Link} <br>
             Class price : ${classes.price}
+
         </p>`
         sendEmail(trainer.email, `New Session Info`, classDetails )
         return res.status(200).send({message:"Class created",Class : classes, isOk :true})
@@ -125,4 +158,5 @@ trainerRouter.patch("/updateClass/:classID", async (req,res)=>{
     }
 })
 
-module.exports = {trainerRouter}
+
+module.exports = { trainerRouter };

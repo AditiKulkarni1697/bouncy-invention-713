@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mega Mart</title>
-
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
 
@@ -288,15 +287,18 @@
         </form>
 
     </div>
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
 
         let form = document.querySelector('form')
+
         form.addEventListener('submit', (e) => {
             e.preventDefault()
-
+            Swal.fire({icon: 'error',
+        title: 'Oops...',
+        text: 'Please fill all the details....'})
         })
-
-
 
         document.querySelector('.card-number-input').oninput = () => {
             document.querySelector('.card-number-box').innerText = document.querySelector('.card-number-input').value;

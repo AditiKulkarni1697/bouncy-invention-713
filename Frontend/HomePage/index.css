@@ -1,0 +1,226 @@
+*{
+    background-color: black;
+}
+
+p{
+    color: white;
+}
+option, select, input, button{
+    color: white;
+    width: 60%;
+
+}
+button{
+    margin-top: 20px;
+    background-color: blue;
+    border: none;
+}
+.heading{
+    color: white;
+    text-align: center;
+    padding-top: 80px;
+    padding-bottom: 20px;
+}
+
+.heading1{
+    color: white;
+    text-align: center;
+    padding-bottom: 20px;
+}
+.nav{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    width: 100%;
+    background-color: black;
+    font-weight: bold;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.nav >div{
+    
+    width: 20%;
+    text-align: center;
+    display: grid;
+    align-items: center;
+    
+}
+
+/* Why_Choose_US */
+.choose{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: black;
+    color: white;
+}
+.choose>div{
+    
+    padding: 50px;
+    text-align: center;
+}
+
+/* choose_images */
+
+.container {
+    position: relative;
+    width: 500px; /* Adjust the container width as needed */
+    height: 500px; /* Adjust the container height as needed */
+    
+  }
+  .container img{
+    border: 3px solid blue;
+
+  }
+  .container img:hover {
+    transform: scale(1.18);
+    transition: transform .5s;
+    border: 3px solid rgb(0, 238, 255);
+  }
+
+  
+  .image {
+    position: absolute;
+    width: 110%;
+    height: 100%;
+    
+  }
+  
+  
+  
+  .image1 {
+    z-index: 1;
+    object-fit: cover;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 85%);
+  }
+  .image2 {
+    z-index: 2;
+    object-fit: cover;
+    clip-path: polygon(0 0, 90% 0, 90% 100%, 0% 100%);
+    
+  }
+  .image3 {
+    z-index: 1;
+    object-fit: cover;
+    clip-path: polygon(0 15%, 100% 15%, 100% 100%, 0% 100%);
+  }
+
+/* choose_text */
+
+.choose>div:last-child{
+    display: grid;
+    grid-template-rows: 2fr 5fr ;
+    text-align: left;
+    font-size: 18px;
+    background-color: black;
+}
+.choose>div:last-child>div>h1{
+    padding-bottom: 15px;
+}
+
+/* services */
+
+.services{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.services>div{
+    border: 3px solid blue;
+    padding: 6px;
+    width: 70%;
+    background-color: black;
+    color: white;
+    margin: 15px;
+    text-align: center;
+}
+
+.services div:hover {
+    
+    border: 3px solid rgb(0, 238, 255);
+  }
+
+  .services img:hover {
+    transform: scale(1.08);
+    transition: transform .5s;
+    
+  }
+.services>div>img{
+    
+    width: 75%;
+    height: 75%;
+    padding-top: 20px;
+}
+
+/* trainer */
+
+.trainer{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 90%;
+    
+    margin: auto;
+    margin-bottom: 50px;
+}
+
+
+
+.trainer >div>div:first-child{
+    width: 100%;
+    object-fit:contain;
+   text-align: center;
+   
+} 
+
+.trainer img{
+    width: 100%;
+}
+
+
+.trainer_text{
+    display: grid;
+    grid-template-rows: 1fr 5fr ;
+    text-align: center;
+    font-size: 18px;
+    width: 70%;
+    color: white;
+    margin: auto;
+}
+
+/* form */
+
+.form{
+    background-color: black;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* margin: 30px; */
+    border: 3px solid blue;
+    padding: 20px;
+    justify-content: center;
+    margin: auto;
+}
+
+.form input, form select{
+   
+    margin-bottom: 10px;
+}
+
+.form>div:first-child{
+    margin: auto;
+}
+
+.form img{
+    width: 100%;
+}
+
+.footer{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    padding: 25px;
+    color: white;
+    margin: auto;
+    
+}
+.footer div{
+    padding-left: 50px;
+}

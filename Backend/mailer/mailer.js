@@ -57,11 +57,14 @@ function getEmailForBookInfo(obj){
 function getOtpForUserInfo (obj) {
   return {
     otpSubject : "A new client booking info",
-    otpContent : `<h2>Hey ${obj.Class.trainerNamename} !</h2>
-    <h2>Here are your new client details:-<h2> 
-    <p><b>Name: </b>${obj.Class.title}<br>
-    <b>Email : ${obj.user.email}</b>
-    <b>Amount Paid for session: </b>₹ ${obj.Class.price}<br>
+    otpContent : `<h2>Hey ${obj.Class.trainerName} !</h2>
+    <h2>Here are your new client details:-<h2>
+
+    <p>
+    <b> Class Name : </b>${obj.Class.title} <br>
+    <b>Name: </b>${obj.user.name}<br>
+    <b>Email : </b>${obj.user.email}<br>
+    <b>Amount Recieved for session: </b>₹ ${obj.Class.price}<br>
     </p>`
   }
 }

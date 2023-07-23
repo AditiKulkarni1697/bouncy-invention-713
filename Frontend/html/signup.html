@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fit-Me | Register</title>
+    <style>
+        body{
+            background-color: rgb(24, 23, 23);
+        }
+        * {
+            box-sizing: border-box;
+            font-family: Verdana, sans-serif;
+        }
+
+        input:focus {
+            background-color: rgb(166, 237, 237);
+            border: 1px solid #0c4999;
+            background-color: #e8e8e8;
+            outline: 0;
+            color: rgb(33, 31, 31);
+        }
+        select,
+        button,
+        input {
+            border-radius: 10px;
+            padding: 10px;
+            border: 1px solid #12319e;
+            margin-bottom: 10px;
+        }
+
+
+        input[type='number']::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+
+        .login p {
+            cursor: default;
+            font-size: large;
+            margin: 30px auto 5px 10px
+        }
+
+        #registerBtn{
+            border-radius: 7px;
+            margin: 2s0px 10px 30px 10px;
+            border: 1px solid rgb(32, 68, 247);
+            background-color: rgb(32, 68, 247);
+        }
+
+        #registerBtn:hover {
+            background-color: #1979c2;
+            cursor: pointer;
+            color: whitesmoke;
+        }
+
+        .gender > div{
+            display: flex;
+            /* justify-content:  */
+            align-items: center;
+        }
+        .gender > div > select{
+            height: 35px;
+            border-radius: 5px;
+            margin-left: 10px;
+            padding: 0;
+        }
+        .city{
+            justify-content: space-evenly;
+        }
+
+        #form {
+            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+            border-radius: 10px;
+            width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            object-fit: cover;
+        }
+
+        .lr {
+            color: rgb(51, 167, 229);
+            cursor: pointer;
+        }
+
+        .register {
+            height: 100vh;
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            grid-template-columns: repeat(1, 1fr);
+            /* background: linear-gradient(120deg,#2980b9, #8e44ad); */
+        }
+
+        #form  > div{
+            margin-top: 20px;
+        }
+
+        .gender,
+        .height{
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+        }
+
+        .height {
+            grid-template-columns: repeat(3,1fr);
+        }
+
+        .height > input{
+            width: 90%;
+        }
+        #logo{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #logo > img{
+            margin-right: 10px;
+            width: 70px;
+            border-radius: 50%;
+        }
+        #logo > h2{
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+       
+        @media (max-width: 600px) {
+            #form {
+                width: 100%;
+            }
+
+            .register p{
+                font-size: 14px;
+            }
+
+            input {
+                font-size: 16px;
+            }
+
+        }
+
+        @media (max-width: 300px) {
+            #form {
+                padding: 10px;
+            }
+        }
+        .otpi,
+        .r {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="register">
+        <div id="form">
+            <div id="logo">
+                <img src="../image/fitme.logo.png" alt="FIT-ME">
+                <h2> - Welcome to Fit-me -</h2>
+            </div>
+            <p>NAME</p>
+            <input type="text" id="registerName" placeholder="Enter Your Name" >
+            <p>EMAIL</p>
+            <input type="text" id="registerEmail" placeholder="Enter Your Email" >
+            <p>MOBILE NO.</p>
+            <input type="number" id="registerMobile" placeholder="Enter Your Phone no." >
+            <div class="gender">
+                <div>
+                    <p>Gender : </p>
+                    <select id="gender">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="city">
+                    <p>CITY : </p>
+                    <input type="text" id="registerLocation" placeholder="Enter Your City" >
+                </div>
+            </div>
+            <div class="height">
+                <input type="number" id="ageInp" placeholder="Enter Your Age" >
+
+                <input type="number" id="heightInp" placeholder="Enter Your Height(cm)" >
+                    
+                <input type="text" id="weightInp" placeholder="Enter Your Weight(kg)" >
+            </div>
+            <p>CREATE PASSWORD</p>
+            <input type="password" id="registerPass1" placeholder="Enter Password" >
+            <p>CONFIRM PASSWORD</p>
+            <input type="password" id="registerPass2" placeholder="Confrim Password" >
+            <p>Show password  <input type="checkbox"  id="show"></p>
+            <input type="number" class="otpi" id="otpEnter" placeholder="Enter Your Otp">
+            <button class="otpb" id="otpbtn" >Get Otp</button>
+            <Button class="r" id="registerBtn">Register</Button>
+            <div>
+                <p>
+                    Already have an accound ? <span onclick="switchLogin()" class="lr">Login</span>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+</body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    sessionStorage.clear()
+    let params = new URLSearchParams(window.location.search)
+    let client = params.get("client") 
+
+    client = (client == 'trainer')? 'trainer' : "user"
+
+    //both pages
+    let RegisterPage = document.querySelector('.register')
+
+    //register inputs
+    let registerUserGenderInp = document.getElementById('gender')
+    let registerNameInp = document.getElementById('registerName')
+    let registerEmailInp = document.getElementById('registerEmail')
+    let registerLocationInp = document.getElementById('registerLocation')
+    let registerMobileInp = document.getElementById('registerMobile')
+    let registerPass1Inp = document.getElementById('registerPass1')
+    let registerPass2Inp = document.getElementById('registerPass2')
+    let registerAgeInp = document.getElementById("ageInp")
+    let registerHeightInp = document.getElementById("heightInp")
+    let registerWeightInp = document.getElementById("weightInp")
+
+    // getting forms
+    let registerbtn = document.querySelector('#registerBtn')
+
+    //otp button
+    let otpbtn = document.getElementById('otpbtn')
+    let otpInp = document.getElementById('otpEnter')
+
+
+    let showbtn = document.getElementById('show')
+    show.addEventListener('click',(e)=>{
+        (e.target.checked)? registerPass1Inp.setAttribute('type', 'text') :registerPass1Inp.setAttribute('type', 'password')
+    } )
+
+
+    const url = `http://localhost:8585`
+    
+    if(client == "trainer"){
+        document.querySelector('.height').style.display = 'none'
+    }
+
+    otpbtn.addEventListener('click', ()=>{
+        let email = registerEmailInp.value;
+        let password = registerPass1Inp.value;
+        let pass2 = registerPass2.value;
+        let name = registerNameInp.value
+        let flag = true;
+
+        if (password != pass2) {
+            flag = false;
+            Swal.fire({
+                icon : 'error',
+                title : "Oops",
+                text : "Password doesn't match!"
+            });
+            return
+        }
+
+        if (flag && client == 'user') {
+            let userObj = {
+                name,
+                email
+            };
+
+            fetch(`${url}/user/register`, {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                },
+                body: JSON.stringify(userObj),
+            })
+                .then((res) => res.json())
+                .then((res) => {
+                    Swal.fire({
+                        icon : (res.isOk)? "success" : 'error',
+                        title :(res.isOk)? "Otp Successful Sent" : "Something went wrong",
+                        text : res.message
+                    })
+                    if(res.isOk) showDis()
+                })
+                .catch((err) => {
+                    Swal.fire({
+                        icon : 'error',
+                        title : "Error",
+                        text : "Somthing Went Wrong"
+                    })
+                    console.log(err)
+                });
+        }
+        else {
+            let userObj = {
+                email,
+                password,
+            };
+
+            fetch(`${url}/trainer/register`, {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                },
+                body: JSON.stringify(userObj),
+            })
+                .then((res) => res.json())
+                .then((res) => {
+                    Swal.fire({
+                        icon : (res.isOk)? "success" : 'error',
+                        title :(res.isOk)? "Otp Successful Sent" : "Something went wrong",
+                        text : res.message
+                    })
+                    if(res.isOk) showDis()
+                })
+                .catch((err) => {
+                    Swal.fire({
+                        icon : 'error',
+                        title : "Error",
+                        text : "Somthing Went Wrong"
+                    })
+                    console.log(err)
+                });
+            }
+        
+    })
+
+
+    function showDis(){
+        otpInp.style.display = 'block'
+        registerbtn.style.display ='block'
+        otpbtn.style.display = 'none'
+    }
+
+    registerbtn.addEventListener('click', ()=>{
+        if(client == 'user'){
+            let userObj = {
+                otp  : otpInp.value,
+                user : {
+                    name : registerNameInp.value,
+                    email : registerEmailInp.value,
+                    phone : registerMobileInp.value,
+                    height : registerHeightInp.value,
+                    weight : registerWeightInp.value,
+                    city : registerLocationInp.value,
+                    password : registerPass2Inp.value,
+                    gender : registerUserGenderInp.value,
+                    age  : registerAgeInp.value
+                }
+            }
+
+            fetch(`${url}/user/otpverify`, {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                },
+                body: JSON.stringify(userObj),
+            }).then((res) => res.json())
+                .then((res) => {
+                    
+                   if(res.isOk){
+                    Swal.fire({
+                        icon :  "success",
+                        title : "Registration Successful" ,
+                        text : res.message
+                    })
+                    
+                    setTimeout(()=>{
+                        switchLogin()
+                    },2000);
+                   }else{
+                    Swal.fire({
+                        icon : 'error',
+                        title : "Error",
+                        text : "something went worng!"
+                    })
+                   }
+
+                })
+                .catch((err) => {
+                    Swal.fire({
+                        icon : 'error',
+                        title : "Error",
+                        text : "something went worng!"
+                    })
+                    console.log(err)
+                });
+        }
+        else{
+            userObj = {
+                otp  : otpInp.value,
+                user : {
+                    name : registerNameInp.value,
+                    email : registerEmailInp.value,
+                    phone : registerMobileInp.value,
+                    city : registerLocationInp.value,
+                    password : registerPass2Inp.value,
+                    gender : registerUserGenderInp.value,
+                }
+            }
+
+            fetch(`${url}/trainer/otpverify`, {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                },
+                body: JSON.stringify(userObj),
+            })
+                .then((res) => res.json())
+                .then((res) => {
+                    if(res.isOk){
+                        Swal.fire({
+                        icon : "success",
+                        title : "Registration Successful",
+                        text : "Welcome ..."
+                    })
+                    
+                    setTimeout(()=>{
+                        switchLogin()
+                    },2000);
+                }else{
+                    Swal.fire({
+                        icon : 'error',
+                        title : "Error",
+                        text : "something went worng!"
+                    })
+                }
+
+                })
+                .catch((err) => {
+                    
+                    Swal.fire({
+                        icon : 'error',
+                        title : "Error",
+                        text : "something went worng!"
+                    })
+                    console.log(err)
+
+                });
+        }
+      
+    })
+
+    function switchLogin(){
+        if(client == 'user') {
+            window.location.href = `./login.html?client=user`
+        }
+        else {
+            window.location.href = `./login.html?client=trainer`
+        }
+    }
+
+
+</script>
+
+</html>

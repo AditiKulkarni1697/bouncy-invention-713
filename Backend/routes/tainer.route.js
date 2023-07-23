@@ -51,6 +51,7 @@ trainerRouter.post("/otpverify", async (req, res) => {
 trainerRouter.post("/register", async (req, res) => {
   let { name, email } = req.body;
   try {
+    if(name == "" || email == "") return res.status(401).send({ message: "Something went wrong", isOk: false });
     let trainer = await TrainerModel.find({ email });
     if (trainer.length !== 0) {
       return res
@@ -64,11 +65,12 @@ trainerRouter.post("/register", async (req, res) => {
         .status(200)
         .send({ message: "otp send successfully to given email", isOk: true });
     }
-  } catch (error) {
-    res
-      .status(400)
-      .send({ message: "someting went wrong", error: error, isOk: false });
-  }
+
+}
+    catch(error){
+        res.status(401).send({ message: "Something went wrong", isOk: false });
+    }
+
 });
 
 trainerRouter.post("/login", async (req, res) => {
@@ -98,12 +100,12 @@ trainerRouter.post("/login", async (req, res) => {
         }
       });
     }
-  } catch (error) {
-    res
-      .status(400)
-      .send({ message: "someting went wrong", error: error, isOk: false });
-  }
-});
+
+}catch(error){
+    res.status(401).send({ message: "Wrong Credientials", isOk: false });
+}
+})
+
 
 trainerRouter.get("/:trainerID", async (req, res) => {
   try {
@@ -167,20 +169,17 @@ trainerRouter.post("/createClass", async (req, res) => {
                     
             Class price : ${classes.price}<br>
             Class duration : ${classes.duration} minutes
-        </p>`;
-    sendEmail(classes.trainerEmail, `New Session Info`, classDetails);
-    return res
-      .status(200)
-      .send({ message: "Class created", Class: classes, isOk: true });
-  } catch (error) {
-    console.log(error);
-    return res.status(400).send({
-      message: "Something went wrong",
-      error: error.message,
-      isOk: false,
-    });
-  }
-});
+
+        </p>`
+        sendEmail(classes.trainerEmail, `New Session Info`, classDetails )
+        return res.status(200).send({message:"Class created",Class : classes, isOk :true})
+    }catch(error){
+        console.log(error)
+        return res.status(400).send({message:"Something went wrong",error:error, isOk : false})
+    }
+})
+
+
 
 trainerRouter.patch("/updateClass/:classID", async (req, res) => {
   let classesID = req.params.classID;

@@ -2,11 +2,15 @@
     margin: 0px;
     /* font-weight: bold; */
     /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
-     background-color: black; 
+
+    background-color: black;
+
     
 }
 
 button{
+
+
     background-color: blue;
     padding: 8px;
     color: white;
@@ -18,6 +22,7 @@ option, select, input{
     color: white;
     width: 60%;
     padding: 8px;
+
 }
 .nav{
     display: grid;
@@ -65,6 +70,7 @@ option, select, input{
 
 /* classes */
 
+
 .create-class-container {
     flex: 1;
     background-color: black;
@@ -89,14 +95,17 @@ option, select, input{
   }
 
 #classes_container{
+
     width: 90%;
     margin: auto;
     color: white;
 }
 
+
 #individual_class{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 5fr 1fr 1fr;
+
     border: 2px solid blue;
     padding: 25px;
     margin: 10px;

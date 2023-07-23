@@ -1,7 +1,9 @@
 const trainer_details = document.getElementById("trainer_details");
 
+
 const trainer = JSON.parse(sessionStorage.getItem("logedClient"));
 fetch(`http://localhost:8585/trainer/${trainer._id}`)
+
   .then((res) => res.json())
   .then((data) => {
     console.log(data);
@@ -42,6 +44,7 @@ fetch(`http://localhost:8585/trainer/${trainer._id}`)
   .catch((err) => console.log(err));
 
 // CLASSES
+
 
 const createBtn = document.getElementById("createBtn");
 const classFormContainer = document.getElementById("classFormContainer");
@@ -478,3 +481,4 @@ function updateClass() {
       // Handle error here, e.g., display an error message to the user
     });
 }
+

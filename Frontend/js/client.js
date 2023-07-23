@@ -2,13 +2,15 @@
 let user = JSON.parse(sessionStorage.getItem('logedClient'))
 
 
-
-//const user = JSON.parse(sessionStorage.getItem("logedClient"));
-//console.log(user);
-
+let logoutbtn = document.getElementById('logout')
+logoutbtn.addEventListener('click',()=>{ 
+  sessionStorage.clear()
+  location.replace('../index.html')
+})
 
 if(!user) {
-  window.location.href = `../HomePage/index.html`
+  window.location.href = `../index.html`
+
 }else{
   getData()
 }
@@ -80,23 +82,29 @@ home.addEventListener('click', switchHome)
 
 
 function switchHome(){
-  window.location.href = `../HomePage/index.html`
+
+  window.location.href = `../index.html`
 }
 
 function switchService(){
-  window.location.href = `../HomePage/index.html`
+  window.location.href = `../index.html`
+
 }
 
 function switchLogout(){
   sessionStorage.clear()
-  window.location.href = `../HomePage/index.html`
+
+  window.location.href = `../index.html`
+
 }
 
 function BookClass(){
   fetch(`http://localhost:8585/classes`)
   .then(res => res.json())
   .then(data => {
-    // console.log(data)
+
+    console.log(data)
+
     if(data.classes.length == 0){
       document.getElementById('showClass').innerHTML = "<h2 style='color:white; text-align:center; margin-top:40px'>No Available Session</h2>"
     }
@@ -112,7 +120,9 @@ function showOwnClass(){
   fetch(`http://localhost:8585/classes/users/${user._id}`)
   .then(res => res.json())
   .then(data => {
-    // console.log(data)
+
+    console.log(data)
+
     if(data.classes.length == 0){
       document.getElementById('showClass').innerHTML = "<h2 style='color:white; text-align:center; margin-top:40px'>No Booked Session</h2>"
     }
@@ -125,7 +135,7 @@ function showOwnClass(){
 
 showOwnClass()
 async function renderderAllData(allData, isown) {
-  // console.log(allData)
+
   let divForRender = document.getElementById('showClass')
   divForRender.innerHTML = ""
   let map_allData = allData.map(el => `                            
@@ -142,7 +152,9 @@ async function renderderAllData(allData, isown) {
       </div>
 
       <div class="book-button">
-          <button class='bookBtn' id="${el._id}">${isown? 'Details': (user.classes.includes(el._id))? "Booked" : 'Book Session'}</button>
+
+          <button class='bookBtn' id="${el._id}">${isown? 'Details': (el.users.includes(user._id))? "Booked" : 'Book Session'}</button>
+
       </div>
   </div>
       </div>`
@@ -153,9 +165,10 @@ async function renderderAllData(allData, isown) {
   let btns = document.querySelectorAll('.bookBtn')
 
   for(let btn of btns){
-    if(btn.textContent != 'Details'){
+    if(btn.textContent != 'Details' && btn.textContent != 'Booked' ){
       btn.addEventListener('click', (e)=>{
-        window.location.href =`../paymentpage/card.html/?classId=${e.target.id}`
+        window.location.href =`./card.html?classId=${e.target.id}`
+
       })
     }
   }

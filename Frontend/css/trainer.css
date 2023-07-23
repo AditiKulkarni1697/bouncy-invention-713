@@ -1,0 +1,146 @@
+*{
+    margin: 0px;
+    /* font-weight: bold; */
+    /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
+     background-color: black; 
+    
+}
+
+button{
+    background-color: blue;
+    padding: 8px;
+    color: white;
+    border: none;
+    height: 30px;
+}
+
+option, select, input{
+    color: white;
+    width: 60%;
+    padding: 8px;
+}
+.nav{
+    display: grid;
+    grid-template-columns: 5fr 1fr 1fr 1fr ;
+    width: 100%;
+    background-color: black;
+    font-weight: bold;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: blue;
+}
+.nav >div{
+    
+    width: 20%;
+    text-align: center;
+    display: grid;
+    align-items: center;
+    
+}
+
+.nav a{
+    text-decoration: none;
+}
+
+.container{
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+
+
+/* user_details */
+
+#trainer_details{
+   
+    text-align: center;
+    background-color: black;
+    color: white;
+    border: 3px solid blue
+}
+
+.img{
+    border-radius: 50%;
+    padding: 50px;
+   
+}
+
+/* classes */
+
+.create-class-container {
+    flex: 1;
+    background-color: black;
+    padding: 20px;
+  }
+  
+  .class-details-container {
+    flex: 2;
+    padding: 20px;
+  }
+  
+  .class-form-container {
+    display: none;
+    padding: 20px;
+    border: 3px solid blue;
+    width: 60%;
+    background-color: black;
+  }
+
+  .createBtn{
+    
+  }
+
+#classes_container{
+    width: 90%;
+    margin: auto;
+    color: white;
+}
+
+#individual_class{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 5fr 1fr 1fr;
+    border: 2px solid blue;
+    padding: 25px;
+    margin: 10px;
+    color: white;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+.message{
+    text-align: center;
+    padding: 100px;
+}
+
+/* update_form */
+
+.modal {
+    display: none; /* Hide the modal by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  
+  /* Styling for the modal content */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+
+.footer{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    padding: 50px;
+    color: white;
+    margin: auto;
+    
+}
+.footer div{
+    padding-left: 50px;
+}

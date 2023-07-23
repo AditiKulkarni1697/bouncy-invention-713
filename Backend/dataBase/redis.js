@@ -7,7 +7,7 @@ const redisClient = redis.createClient({
   port: 6379,
 });
 
-//redisClient.connect(); //temperory changes
+redisClient.connect();
 
 redisClient.on("error", (error) => {
   console.log(error.message);

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home|FitMe</title>
-    <link rel="stylesheet" href="./index.css" />
+    <link rel="stylesheet" href="./css/index.css" />
     <!-- bootstrap -->
     <link
       rel="stylesheet"
@@ -16,19 +16,13 @@
   <body>
     <nav class="nav">
       <div class="logo">
-        <img src="../images/fitme.logo.png" width="80px" alt="fitme_logo" />
+        <img src="./images/fitme.logo.png" width="80px" alt="fitme_logo" />
       </div>
 
-      <div>
-        <a class="inner_div" href="../trainerpage/trainer.html">For Trainer</a>
-      </div>
-      <div><a class="inner_div" href="#">Home</a></div>
-      <div>
-        <a class="inner_div" href="../login_signup/login.html">Login</a>
-      </div>
-      <div>
-        <a class="inner_div" href="../login_signup/signup.html">Register</a>
-      </div>
+      <div id="options"><p class="inner_div" id="trainer">For Trainer</p>
+        <p class="inner_div" id="service">Services</p>
+        <p class="inner_div" id="login">Login</p>
+        <p class="inner_div" id="register">Register</p></div>
 
     </nav>
     <main>
@@ -366,7 +360,7 @@
         <div>Contact Us</div>
       </div>
     </footer>
-    <script src="index.js"></script>
+    <script src="./js/index.js"></script>
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

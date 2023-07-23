@@ -8,6 +8,7 @@ const { connection } = require("./dataBase/dataBase");
 const { redisClient } = require("./dataBase/redis");
 const { trainerRouter } = require("./routes/tainer.route");
 const { sendEmail } = require("./mailer/mailer");
+const { paymentRouter } = require("./routes/payment.route");
 
 const app = express();
 app.use(express.json());
@@ -23,6 +24,7 @@ app.get("/", async (req, res) => {
 app.use("/user", userRoute);
 app.use("/trainer", trainerRouter);
 app.use("/classes", classesRouter);
+app.use('/payment', paymentRouter)
 
 app.listen(process.env.server_port, async () => {
   try {

@@ -214,9 +214,7 @@
     let params = new URLSearchParams(window.location.search)
     let client = params.get("client") 
 
-    if(client == null || client == '' || !client){
-        client = 'user'
-    }
+    client = (client == 'trainer')? 'trainer' : "user"
 
     //both pages
     let RegisterPage = document.querySelector('.register')
@@ -240,9 +238,6 @@
     let otpbtn = document.getElementById('otpbtn')
     let otpInp = document.getElementById('otpEnter')
 
-    function switchLogin(location) {
-        location.replace(location)
-    }
 
     let showbtn = document.getElementById('show')
     show.addEventListener('click',(e)=>{
@@ -379,7 +374,7 @@
                     })
                     
                     setTimeout(()=>{
-                        switchLogin('./login.htm/?client=user')
+                        switchLogin()
                     },2000);
                    }else{
                     Swal.fire({
@@ -429,7 +424,7 @@
                     })
                     
                     setTimeout(()=>{
-                        switchLogin('./login.htm/?client=trainer')
+                        switchLogin()
                     },2000);
                 }else{
                     Swal.fire({

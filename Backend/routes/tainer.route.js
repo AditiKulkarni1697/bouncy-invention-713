@@ -51,6 +51,7 @@ trainerRouter.post("/otpverify", async (req, res) => {
 trainerRouter.post("/register", async (req, res) => {
   let { name, email } = req.body;
   try {
+    if(name == "" || email == "") return res.status(401).send({ message: "Something went wrong", isOk: false });
     let trainer = await TrainerModel.find({ email });
     if (trainer.length !== 0) {
       return res
@@ -63,6 +64,10 @@ trainerRouter.post("/register", async (req, res) => {
       return res
         .status(200)
         .send({ message: "otp send successfully to given email", isOk: true });
+    }
+}
+    catch(error){
+        res.status(401).send({ message: "Something went wrong", isOk: false });
     }
 
 });
@@ -94,8 +99,10 @@ trainerRouter.post("/login", async (req, res) => {
         }
       });
     }
-
-});
+}catch(error){
+    res.status(401).send({ message: "Wrong Credientials", isOk: false });
+}
+})
 
 trainerRouter.get("/:trainerID", async (req, res) => {
   try {
@@ -142,8 +149,6 @@ trainerRouter.get("/:trainerID", async (req, res) => {
 trainerRouter.post("/createClass", async (req, res) => {
   let Class = req.body;
   Class.Link = "https://us06web.zoom.us/j/99494885";
-
-
   try {
     let classes = new ClassesModel(Class);
     await classes.save();
@@ -164,7 +169,7 @@ trainerRouter.post("/createClass", async (req, res) => {
         return res.status(200).send({message:"Class created",Class : classes, isOk :true})
     }catch(error){
         console.log(error)
-        return res.status(400).send({message:"Something went wrong",error:error.message, isOk : false})
+        return res.status(400).send({message:"Something went wrong",error:error, isOk : false})
     }
 })
 

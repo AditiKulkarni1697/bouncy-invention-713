@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mega Mart</title>
+    <title>Fit-Me | Booking</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
 
@@ -226,7 +226,7 @@
                     <span>cvv</span>
                     <div class="cvv-box"></div>
 
-                    <img src="pictures/visa.jpg" alt="">
+                    <img src="" alt="">
                 </div>
             </div>
 
@@ -290,32 +290,92 @@
    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-
+        document.getElementById('ddd').setAttribute('value', `Proceed To Pay ....`)
+        
         let client = JSON.parse(sessionStorage.getItem('logedClient'))
 
-        let params= new URLSearchParams(window.location.search)
-        let classID = params.get("classID")
-        console.log(classID)
+        if(!client) {
+            window.location.href = `../index.html?client=user`
+        }
 
-        fetch('http://localhost:8585/classes/'+classID)
+
+        function getCarddetails(){
+            fetch(`http://localhost:8585/payment/${client._id}`)
+            .then(res=> res.json())
+            .then((data) => {
+                console.log(data)
+                if(data.isOk){
+                    let x = JSON.parse(data.payments.cardDetails)
+                    document.querySelector('.cvv-box').innerText = x.cvv;
+                    document.querySelector('.cvv-input').value = x.cvv;
+
+                    document.querySelector('.exp-year').innerText = x.year
+                    document.querySelector('.year-input').value = x.year
+
+                    document.querySelector('.card-number-box').innerText = x.cardNumber
+                    document.querySelector('.card-number-input').value = x.cardNumber
+
+                    document.querySelector('.exp-month').innerText = x.month
+                    document.querySelector('.month-input').value = x.month
+
+                    document.querySelector('.card-holder-name').innerText = x.cardHolderName
+                    document.querySelector('.card-holder-input').value = x.cardHolderName
+                }
+            })
+        }
+
+      
+        let params= new URLSearchParams(window.location.search)
+        let classID = params.get("classId")
+
+
+        fetch(`http://localhost:8585/classes/${classID}`)
         .then(res=> res.json())
-        .then(data => console.log(data))
+        .then(data => {
+            console.log(data)
+            if(data.isOk){
+                getCarddetails()
+                document.getElementById('ddd').setAttribute('value', `Proceed To Pay ₹ ${data.classes.price}`)
+            }
+        })
 
         let form = document.querySelector('form')
 
         form.addEventListener('submit', (e) => {
             e.preventDefault()
+            
+            const obj = {
+                user : client,
+                card : {
+                    cardNumber  : document.querySelector('.card-number-input').value,
+                    cardHolderName : document.querySelector('.card-holder-input').value,
+                    month : document.querySelector('.month-input').value,
+                    year : document.querySelector('.year-input').value,
+                    cvv : document.querySelector('.cvv-input').value
+                }
+            }
+            console.log(obj)
 
-            fetch(`http://localhost:8585/bookClass/${classID}`, {
+            fetch(`http://localhost:8585/user/bookClass/${classID}`, {
                 method : "POST", 
                 headers : {
                     "Content-type" : "application/json"
                 },
-                body : JSON.stringify(client)
+                body : JSON.stringify(obj)
             })
             .then(res => res.json())
-            .then(data => console.log(data))
-            .catch(err=> console.log(err))
+            .then((data) => {
+                if(data.isOk){
+                    console.log(data)
+                    Inof(true, data.message, data.message)
+                    setTimeout(()=>{window.location.href = './client.html?client=user'}, 3000)
+                }
+                else Inof(false, 'Something went wrong!', data.message)
+            })
+            .catch((err)=> {
+                console.log(err)
+                Inof(false, "Somthing Went Wrong", "some error occured")
+            })
         })
 
 

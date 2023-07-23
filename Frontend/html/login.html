@@ -207,7 +207,7 @@
                    if(res.isOk){
                     setTimeout(() => {
                         sessionStorage.setItem('logedClient', JSON.stringify(res.user))
-                        window.location.href = '../clientpage/client.html'
+                        window.location.href = './client.html?client=user'
                     }, 3000);
                    }
                 })
@@ -237,7 +237,7 @@
                     if(res.isOk){
                         setTimeout(() => {
                             sessionStorage.setItem('logedClient', JSON.stringify(res.trainer))
-                            window.location.href = '../trainerpage/trainer.html'
+                            window.location.href = './trainer.html?client=trainer'
                         }, (2000));
                     }
                 })

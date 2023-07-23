@@ -11,6 +11,8 @@ const {
 const bcrypt = require("bcrypt");
 const { tokenCreator } = require("../helper/tokenCreater");
 const { ClassesModel } = require("../models/class.model");
+const { PaymentModel } = require("../models/payment.model");
+
 
 userRoute.post("/otpverify", async (req, res) => {
   try {
@@ -78,6 +80,8 @@ userRoute.get("/:userID", async (req, res) => {
 userRoute.post("/register", async (req, res) => {
   let { name, email } = req.body;
   try {
+    if(name == "" || email == "") return res.status(401).send({ message: "Something went wrong", isOk: false });
+
     let user = await UserModel.find({ email });
     if (user.length !== 0) {
       return res
@@ -166,26 +170,36 @@ userRoute.delete("/delete/:id", async (req, res) => {
 
 userRoute.post('/bookClass/:classID', async (req, res) => {
    let classID = req.params?.classID
-    let user = req.body
-   try {
+    let user = req.body.user
+      try {
     let Class = await ClassesModel.findById(classID)
-    console.log(Class)
     if(Class.seatOccupied == Class.seatTotal) {
         return res.status(400).send({message : "no seats avaible" , isOk : false})
     }
 
-    let updatedClass = await ClassesModel.findByIdAndUpdate({_id : classID},{$push : {classes:user._id}, seatOccupied : Class.seatOccupied +1});
-    let trainer = await TrainerModel.findById(updatedClass.trainerID)
-    let usermail   = getEmailForBookInfo({Class, user})
-    let trainermail = getOtpForUserInfo({Class, user})
-    
-    sendEmail(user.email, usermail.otpSubject, usermail.otpContent)
+    let updatedClass = await ClassesModel.findByIdAndUpdate(
+      { _id: classID },
+      { $push: { users: user._id }, $inc: { seatOccupied: 1 } },
+      { new: true } 
+    );
 
-    sendEmail (trainer.email, trainermail.otpSubject, trainermail.otpContent)
+    let payment = new PaymentModel({userID : user._id, classID :classID,     cardDetails : JSON.stringify(req.body.card)})
+    await payment.save()
+      
 
-    return res.status(200).send({ message: "Class booked successfully" , ClassDetails : updatedClass, isOk :true});
+    let x = await PaymentModel.find()
+    console.log(x)
 
+      let usermail   = getEmailForBookInfo({Class, user})
+      let trainermail = getOtpForUserInfo({Class, user})
+  
+      sendEmail(user.email, usermail.otpSubject, usermail.otpContent)
+  
+      sendEmail (Class.trainerEmail, trainermail.otpSubject, trainermail.otpContent)
+  
+      return res.status(200).send({ message: "Class booked successfully" , ClassDetails : updatedClass, isOk :true, payment : x});
 } catch (error) {
+  console.log(error)
     res
         .status(400)
         .send({ message: "Something went wrong", error: error, isOk: false });

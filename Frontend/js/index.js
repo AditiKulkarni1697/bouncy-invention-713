@@ -16,18 +16,18 @@ login.addEventListener('click', switchLogin)
 
 
 function switchLogin(){
-    window.location.href = `../login_signup/login.html?client=${client}`
+    window.location.href = `./html/login.html?client=${client}`
 }
 
 function switchService(){
-    window.location.href = `../login_signup/signup.html?client=${client}`
+    window.location.href = `./html/signup.html?client=${client}`
 }
 
 function switchRegister(){
-    window.location.href = `../login_signup/signup.html?client=${client}`
+    window.location.href = `./html/signup.html?client=${client}`
 }
 
 function switchTrainer (){
-    window.location.href = `../login_signup/login.html?client=${'trainer'}`
+    window.location.href = `./html/login.html?client=${'trainer'}`
 }
 

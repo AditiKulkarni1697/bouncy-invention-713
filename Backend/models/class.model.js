@@ -14,7 +14,7 @@ const classesSchema = mongoose.Schema({
     trainerName:String, 
     trainerEmail : {type:String, required : true}  ,
     classDate:Date,
-    classTime:Date,             
+    classTime:String,             
     users:[{type:String}]
 })
 

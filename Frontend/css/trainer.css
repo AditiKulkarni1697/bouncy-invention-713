@@ -3,16 +3,34 @@
     /* font-weight: bold; */
     /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
 
-    background-color: black;
+    /* background-color: black; */
 
     
 }
+body{
+    background-color: black;
+}
 
+form {
+    /* display: flex;
+    flex-direction: column;
+    justify-content: center; */
+
+}
+
+input{
+    background-color: rgb(33, 29, 29);
+    height: 25px;
+    /* width: 100%; */
+}
 button{
-
-
+    margin: 5px;
+    border-radius: 5px;
     background-color: blue;
-    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 20px;
     color: white;
     border: none;
     height: 30px;
@@ -32,6 +50,7 @@ option, select, input{
     font-weight: bold;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: blue;
+    border-bottom: 1px solid blue;
 }
 .nav >div{
     
@@ -51,15 +70,27 @@ option, select, input{
     grid-template-columns: 1fr 3fr;
 }
 
+#classdetails{
+    border-left: 1px solid blue;
+}
 
 /* user_details */
 
 #trainer_details{
-   
-    text-align: center;
+    height: 82vh;
+   display: flex;
+   justify-content: center;
+    /* text-align: center; */
     background-color: black;
     color: white;
-    border: 3px solid blue
+    padding:  15px;
+    /* border: 3px solid blue */
+}
+
+#trainer_details p{
+    font-size: larger;
+    margin-top: 8px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .img{
@@ -85,17 +116,19 @@ option, select, input{
   .class-form-container {
     display: none;
     padding: 20px;
-    border: 3px solid blue;
+    border: 1px solid blue;
     width: 60%;
     background-color: black;
   }
 
-  .createBtn{
-    
+  #createBtn{
+    margin-left: 4.5%;
+    width: 250px;
+    padding: 20px 15px;
+    font-size: larger;
   }
 
 #classes_container{
-
     width: 90%;
     margin: auto;
     color: white;
@@ -105,10 +138,11 @@ option, select, input{
 #individual_class{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 5fr 1fr 1fr;
-
-    border: 2px solid blue;
+    align-items: center;
+    border: 1px solid blue;
     padding: 25px;
     margin: 10px;
+    margin-top: 20px;
     color: white;
     border-radius: 5px;
     font-size: 20px;
@@ -143,6 +177,7 @@ option, select, input{
   }
 
 .footer{
+    border-top: 1px solid rgb(24, 24, 200);
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     padding: 50px;

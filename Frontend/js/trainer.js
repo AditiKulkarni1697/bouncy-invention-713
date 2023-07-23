@@ -1,7 +1,12 @@
 const trainer_details = document.getElementById("trainer_details");
 
 
+
 const trainer = JSON.parse(sessionStorage.getItem("logedClient"));
+
+if(!trainer) {
+  location.replace('../index.html')
+}
 fetch(`http://localhost:8585/trainer/${trainer._id}`)
 
   .then((res) => res.json())
@@ -28,15 +33,7 @@ fetch(`http://localhost:8585/trainer/${trainer._id}`)
         <p>Ph No. : ${data.Trainer.phone}</p>
         <p>City : ${data.Trainer.city}</p>
         <p>Gender : ${data.Trainer.gender}</p>
-        <div>
-        <li>
-         ${
-           data.Trainer.classes
-             ? data.Trainer.classes.map((ele) => `<ul>${ele}</ul>`)
-             : []
-         }
-         </li>
-        </div>
+        <p>Total Classes : ${data.Trainer.classes.length}</p>
        </div>
        
        `;
@@ -45,12 +42,14 @@ fetch(`http://localhost:8585/trainer/${trainer._id}`)
 
 // CLASSES
 
-
 const createBtn = document.getElementById("createBtn");
 const classFormContainer = document.getElementById("classFormContainer");
 let flag = false;
 createBtn.addEventListener("click", (e) => {
+  document.querySelector('#classes_container').innerHTML = ""
   e.preventDefault();
+  // classContainer.innerHTML = ""
+  // console.log(classContainer)
   if (flag == false) {
     classFormContainer.innerHTML = "";
     classFormContainer.setAttribute("style", "display:block");
@@ -101,6 +100,7 @@ createBtn.addEventListener("click", (e) => {
     const venue_text = document.createElement("p");
     const venue_input = document.createElement("input");
     venue_input.setAttribute("placeholder", "venue");
+    venue_text.innerHTML = "Venue"
     venue_input.setAttribute("id", "venue");
     venueDiv.append(venue_text, venue_input);
 
@@ -182,19 +182,19 @@ function createClass() {
     price: parseFloat(document.getElementById("price").value),
     activity: document.getElementById("activity").value,
     venue: document.getElementById("venue").value,
-    //Link: document.getElementById("Link").value,
+    // Link: document.getElementById("Link").value,
     duration: document.getElementById("duration").value,
     image: document.getElementById("image").value,
     trainerID: trainer._id,
     trainerName: trainer.name,
     trainerEmail: trainer.email,
 
-    classDate: new Date(document.getElementById("classDate").value),
-    classTime: new Date(document.getElementById("classTime").value),
+    classDate: document.getElementById("classDate").value,
+    classTime:document.getElementById("classTime").value,
     users: [],
   };
 
-  console.log(classData);
+  console.log(classData,'sfdfsfs');
 
   fetch("http://localhost:8585/trainer/createClass", {
     method: "POST",
@@ -205,13 +205,29 @@ function createClass() {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log("Class created:", data);
-      alert("Class created");
+      console.log(data, "ssssssssssss")
+      if(data.isOk){
+        Swal.fire({
+          icon : 'success',
+          title : data.message,
+          text : data.message
+        })
+        // resetClassForm();
+        setTimeout(()=>{location.reload()},  3000)
+      }
+      else{
+        Swal.fire({
+          icon : 'error',
+          title : data.message,
+          text : data.message
+        })
+      }
 
-      resetClassForm();
+    
     })
     .catch((error) => {
-      console.error("Error creating class:", error.message);
+      
+      console.log("Error creating class:");
       // Handle error here, e.g., display an error message to the user
     });
 }
@@ -244,6 +260,7 @@ fetch(`http://localhost:8585/classes/trainer/${trainer._id}`)
       data.classes.map((ele) => {
         const individual_class = document.createElement("div");
         individual_class.setAttribute("id", "individual_class");
+        individual_class.setAttribute("data-id", ele._id);
         const title = document.createElement("p");
         title.innerHTML = ele.title;
         const price = document.createElement("p");
@@ -255,6 +272,7 @@ fetch(`http://localhost:8585/classes/trainer/${trainer._id}`)
         const update = document.createElement("button");
         update.innerHTML = "Update";
         update.setAttribute("id", "update");
+        update.setAttribute("data-id", ele._id);
 
         const deleted = document.createElement("button");
         deleted.innerHTML = "Delete";
@@ -270,11 +288,29 @@ fetch(`http://localhost:8585/classes/trainer/${trainer._id}`)
           })
             .then((response) => response.json())
             .then((data) => {
-              console.log("Class deleted:", data);
-              alert("Class deleted");
+              if(data.isOk){
+                Swal.fire({
+                  icon : 'success',
+                  title : "Delete operation successful",
+                  text : data.message
+                })
+                setTimeout(()=>{location.reload()},  1500)
+              }
+              else{
+                Swal.fire({
+                  icon : 'error',
+                  title : 'Something went wrong',
+                  text : data.message
+                })
+              }
             })
             .catch((error) => {
-              console.error("Error deleting class:", error.message);
+              // console.log("Error deleting class:", error.message);
+              Swal.fire({
+                icon : 'error',
+                title : 'Something Went Wrong',
+                text : "Some error occured!"
+              })
               // Handle error here, e.g., display an error message to the user
             });
         });
@@ -283,8 +319,13 @@ fetch(`http://localhost:8585/classes/trainer/${trainer._id}`)
           e.preventDefault();
 
           sessionStorage.setItem("classID", ele._id);
+          
+          
           if (flag == false) {
             update_form.innerHTML = "";
+            
+          /////////
+
             update_form.setAttribute("style", "display:block");
             update_form.setAttribute("style", "width: 200px");
             update_form.setAttribute("style", "z-index: 1");
@@ -344,6 +385,7 @@ fetch(`http://localhost:8585/classes/trainer/${trainer._id}`)
             venue_input.setAttribute("id", "venue");
             //venue_input.setAttribute("value", ele.venue);
             venueDiv.append(venue_text, venue_input);
+            venue_text.innerHTML = "Venu"
 
             const linkDiv = document.createElement("div");
             const link_text = document.createElement("p");
@@ -392,6 +434,26 @@ fetch(`http://localhost:8585/classes/trainer/${trainer._id}`)
             // classTime_input.setAttribute("value", ele.classTime);
             classTimeDiv.append(classTime_text, classTime_input);
 
+            let divID = e.target.dataset.id
+            let divs = document.querySelectorAll('#individual_class')
+            
+            for(let div of divs){
+              let id = div.dataset.id
+              // console.log(id, divID)
+            if(id !== divID){
+              div.style.display = "none"
+            }else{
+              div.style.display  = 'block'
+              let ptags = document.querySelectorAll(`[data-id="${id}"] > p`)
+              let btns = document.querySelectorAll(`[data-id="${id}"] > button`)
+              let form =  document.querySelector(`#update_form`)
+              console.log(form)
+              for(let p of ptags){p.style.display = 'none'}
+              for(let b of btns){b.style.display = 'none'}
+              form.style.width = "100%"
+            }
+            }
+
             const update = document.createElement("button");
             update.innerHTML = "Update";
             update.addEventListener("click", (e) => {
@@ -425,7 +487,6 @@ fetch(`http://localhost:8585/classes/trainer/${trainer._id}`)
           activity,
           update_form,
           update,
-
           deleted
         );
         classes_container.append(individual_class);
@@ -471,13 +532,29 @@ function updateClass() {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log("Class updated:", data);
-      alert("Class updated");
-
-      resetClassForm();
+      if(data.isOk){
+        Swal.fire({
+          icon : 'success',
+          title : data.message,
+          text : data.message
+        })
+        setTimeout(()=>{location.reload()},  3000)
+      }
+      else{
+        Swal.fire({
+          icon : 'error',
+          title : data.message,
+          text : data.message
+        })
+      }
     })
     .catch((error) => {
-      console.error("Error creating class:", error.message);
+      console.error("Error deleting class:", error.message);
+      Swal.fire({
+        icon : 'error',
+        title : 'Something Went Wrong',
+        text : "Some error occured!"
+      })
       // Handle error here, e.g., display an error message to the user
     });
 }

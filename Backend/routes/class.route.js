@@ -40,9 +40,9 @@ classesRouter.get("/:classID", async (req,res)=>{
     let classID= req.params.classID;
     try{
         let classes = await ClassesModel.findById(classID);
-        return res.status(200).send({message:"Class Feteched successfully.",classes})
+        return res.status(200).send({message:"Class Feteched successfully.",classes, isOk : true})
     }catch(error){
-        return res.status(400).send({message:"Something went wrong",error:error.message})
+        return res.status(400).send({message:"Something went wrong",error:error.message, isOk : false})
     }
 })
 
@@ -53,9 +53,9 @@ classesRouter.delete("/delete/:classID", async (req,res)=>{
 
     try{
         let classes = await ClassesModel.findByIdAndDelete(classID);        
-        return res.status(200).send({message:"class data deleted"})
+        return res.status(200).send({message:"class data deleted" , isOk : true, })
     }catch(error){
-        return res.status(400).send({message:"Something went wrong",error:error.message})
+        return res.status(400).send({message:"Something went wrong",error:error.message, isOk : false})
     }
 })
 

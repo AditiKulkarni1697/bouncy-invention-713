@@ -52,10 +52,7 @@ trainerRouter.post("/register", async (req,res)=>{
         return res.status(400).send({error:error, message : 'something went wrong' , isOk : false})
 
     }
-  } catch (error) {
-    res.status(400).send({ error: error, message: "something went wrong" });
-    console.log(error);
-  }
+ 
 });
 
 
@@ -96,9 +93,6 @@ trainerRouter.get('/:trainerID', async (req, res)=>{
        return res.status(400).send({message : "something went wrong", error : error, isOk : false})
 
     }
-  } catch (error) {
-    res.status(400).send({ message: "someting went wrong", error: error });
-  }
 });
 
 trainerRouter.get("/:trainerID", async (req, res) => {
@@ -122,7 +116,8 @@ trainerRouter.get("/:trainerID", async (req, res) => {
 
 trainerRouter.post("/createClass", async (req, res) => {
   let Class = req.body;
-  Class.seatOccupied = 0;
+  Class.Link = "https://us06web.zoom.us/j/99494885";
+
 
   try {
     let classes = new ClassesModel(Class);
@@ -132,16 +127,17 @@ trainerRouter.post("/createClass", async (req, res) => {
       { $push: { classes: classes._id } }
     );
     let trainer = await TrainerModel.findById(classes.trainerID);
-    let classDetails = `<h1>Hello ${trainer.name}</h1>
+    let classDetails = `<h1>Hello ${classes.trainerName}</h1>
         <h2>Here are your session details:-<h2> 
         <p>Class title : ${classes.title} <br>
             Class link : ${classes.Link} <br>
-            Class price : ${classes.price}
-
+            Class price : ${classes.price}<br>
+            Class duration : ${classes.duration} minutes
         </p>`
-        sendEmail(trainer.email, `New Session Info`, classDetails )
+        sendEmail(classes.trainerEmail, `New Session Info`, classDetails )
         return res.status(200).send({message:"Class created",Class : classes, isOk :true})
     }catch(error){
+        console.log(error)
         return res.status(400).send({message:"Something went wrong",error:error.message, isOk : false})
     }
 })

@@ -291,14 +291,41 @@
 
     <script>
 
+        let client = JSON.parse(sessionStorage.getItem('logedClient'))
+
+        let params= new URLSearchParams(window.location.search)
+        let classID = params.get("classID")
+        console.log(classID)
+
+        fetch('http://localhost:8585/classes/'+classID)
+        .then(res=> res.json())
+        .then(data => console.log(data))
+
         let form = document.querySelector('form')
 
         form.addEventListener('submit', (e) => {
             e.preventDefault()
-            Swal.fire({icon: 'error',
-        title: 'Oops...',
-        text: 'Please fill all the details....'})
+
+            fetch(`http://localhost:8585/bookClass/${classID}`, {
+                method : "POST", 
+                headers : {
+                    "Content-type" : "application/json"
+                },
+                body : JSON.stringify(client)
+            })
+            .then(res => res.json())
+            .then(data => console.log(data))
+            .catch(err=> console.log(err))
         })
+
+
+        function Inof (isOk, title, text){
+            Swal.fire({
+                icon: isOk? 'success' : 'error',
+                title: title,
+                text: text
+            })
+        }
 
         document.querySelector('.card-number-input').oninput = () => {
             document.querySelector('.card-number-box').innerText = document.querySelector('.card-number-input').value;

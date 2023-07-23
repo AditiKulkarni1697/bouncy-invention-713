@@ -27,22 +27,37 @@ button{
     text-align: center;
     padding-bottom: 20px;
 }
+
+
+/* some changes */
 .nav{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    padding:  0 40px;
+    display: flex;
+    justify-content: space-between;
     width: 100%;
+    align-items: center;
     background-color: black;
     font-weight: bold;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 .nav >div{
-    
-    width: 20%;
-    text-align: center;
-    display: grid;
-    align-items: center;
+    display: flex;
+    justify-content: space-evenly;
     
 }
+
+#options{
+    display: flex;
+    margin-right: 50px;
+}
+#options p{
+    cursor: pointer;
+    margin-right: 30px;
+    color: blue;
+}
+
+
+/* changesend */
 
 /* Why_Choose_US */
 .choose{

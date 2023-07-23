@@ -64,12 +64,7 @@ trainerRouter.post("/register", async (req, res) => {
         .status(200)
         .send({ message: "otp send successfully to given email", isOk: true });
     }
-  } catch (error) {
-    console.log(error);
-    return res
-      .status(400)
-      .send({ error: error, message: "something went wrong", isOk: false });
-  }
+
 });
 
 trainerRouter.post("/login", async (req, res) => {
@@ -99,11 +94,7 @@ trainerRouter.post("/login", async (req, res) => {
         }
       });
     }
-  } catch (error) {
-    res
-      .status(400)
-      .send({ message: "someting went wrong", error: error, isOk: false });
-  }
+
 });
 
 trainerRouter.get("/:trainerID", async (req, res) => {
@@ -150,7 +141,8 @@ trainerRouter.get("/:trainerID", async (req, res) => {
 
 trainerRouter.post("/createClass", async (req, res) => {
   let Class = req.body;
-  Class.seatOccupied = 0;
+  Class.Link = "https://us06web.zoom.us/j/99494885";
+
 
   try {
     let classes = new ClassesModel(Class);
@@ -160,25 +152,34 @@ trainerRouter.post("/createClass", async (req, res) => {
       { $push: { classes: classes._id } }
     );
     let trainer = await TrainerModel.findById(classes.trainerID);
-    let classDetails = `<h1>Hello ${trainer.name}</h1>
+    let classDetails = `<h1>Hello ${classes.trainerName}</h1>
         <h2>Here are your session details:-<h2> 
         <p>Class title : ${classes.title} <br>
             Class link : ${classes.Link} <br>
-            Class price : ${classes.price}
 
-        </p>`;
-    sendEmail(trainer.email, `New Session Info`, classDetails);
-    return res
-      .status(200)
-      .send({ message: "Class created", Class: classes, isOk: true });
-  } catch (error) {
-    return res.status(400).send({
-      message: "Something went wrong",
-      error: error.message,
-      isOk: false,
-    });
-  }
-});
+            Class price : ${classes.price}<br>
+            Class duration : ${classes.duration} minutes
+        </p>`
+        sendEmail(classes.trainerEmail, `New Session Info`, classDetails )
+        return res.status(200).send({message:"Class created",Class : classes, isOk :true})
+    }catch(error){
+        console.log(error)
+        return res.status(400).send({message:"Something went wrong",error:error.message, isOk : false})
+    }
+})
+
+
+trainerRouter.patch("/updateClass/:classID", async (req,res)=>{
+    let classesID= req.params.classID;
+    let payload = req.body;
+    try{
+        let classes = await ClassesModel.findByIdAndUpdate(classesID,payload);        
+       return res.status(200).send({message:"class data updated", Class : classes, isOk : true})
+    }catch(error){
+        return res.status(400).send({message:"Something went wrong",error:error.message, isOk :false})
+    }
+})
+
 
 trainerRouter.patch("/updateClass/:classID", async (req, res) => {
   let classesID = req.params.classID;

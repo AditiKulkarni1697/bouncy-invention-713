@@ -163,40 +163,35 @@ userRoute.delete("/delete/:id", async (req, res) => {
   }
 });
 
-userRoute.get("/bookClass/:classID", async (req, res) => {
-  let classID = req.params?.classID;
-  try {
-    let Class = await ClassesModel.findById(classID);
 
-    if (Class.seatOccupied == Class.seatTotal) {
-      return res.status(400).send({ message: "no seats avaible", isOk: false });
+userRoute.post('/bookClass/:classID', async (req, res) => {
+   let classID = req.params?.classID
+    let user = req.body
+   try {
+    let Class = await ClassesModel.findById(classID)
+    console.log(Class)
+    if(Class.seatOccupied == Class.seatTotal) {
+        return res.status(400).send({message : "no seats avaible" , isOk : false})
     }
 
-    let updatedClass = await ClassesModel.findByIdAndUpdate(
-      { _id: classID },
-      { $push: { classes: Class._id }, seatOccupied: Class.seatOccupied + 1 }
-    );
-    let trainer = await TrainerModel.findById(updatedClass.trainerID);
-    let user = await UserModel.find({ email: Class.email })[0]; //changes by Aditi
-    let usermail = getEmailForBookInfo({ Class, user });
-    let trainermail = getOtpForUserInfo({ Class, user });
+    let updatedClass = await ClassesModel.findByIdAndUpdate({_id : classID},{$push : {classes:user._id}, seatOccupied : Class.seatOccupied +1});
+    let trainer = await TrainerModel.findById(updatedClass.trainerID)
+    let usermail   = getEmailForBookInfo({Class, user})
+    let trainermail = getOtpForUserInfo({Class, user})
+    
+    sendEmail(user.email, usermail.otpSubject, usermail.otpContent)
 
-    sendEmail(user.email, usermail.otpSubject, usermail.otpContent);
+    sendEmail (trainer.email, trainermail.otpSubject, trainermail.otpContent)
 
-    sendEmail(trainer.email, trainermail.otpSubject, trainermail.otpContent);
+    return res.status(200).send({ message: "Class booked successfully" , ClassDetails : updatedClass, isOk :true});
 
-    return res.status(200).send({
-      message: "Class booked successfully",
-      ClassDetails: updatedClass,
-      isOk: true,
-    });
-  } catch (error) {
-    res.status(400).send({
-      message: "Something went wrong",
-      error: error.message, //changes by Aditi
-      isOk: false,
-    });
-  }
-});
+} catch (error) {
+    res
+        .status(400)
+        .send({ message: "Something went wrong", error: error, isOk: false });
+}
+})
+
+
 
 module.exports = { userRoute };

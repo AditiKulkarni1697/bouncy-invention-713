@@ -16,6 +16,7 @@ login.addEventListener('click', switchLogin)
 
 
 function switchLogin(){
+
     window.location.href = `./html/login.html?client=${client}`
 }
 
@@ -29,5 +30,6 @@ function switchRegister(){
 
 function switchTrainer (){
     window.location.href = `./html/login.html?client=${'trainer'}`
+
 }
 

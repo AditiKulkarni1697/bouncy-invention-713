@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Fit-Me | Booking</title>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
 
@@ -226,7 +228,9 @@
                     <span>cvv</span>
                     <div class="cvv-box"></div>
 
+
                     <img src="" alt="">
+
                 </div>
             </div>
 
@@ -290,6 +294,7 @@
    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+
         document.getElementById('ddd').setAttribute('value', `Proceed To Pay ....`)
         
         let client = JSON.parse(sessionStorage.getItem('logedClient'))
@@ -339,10 +344,12 @@
             }
         })
 
+
         let form = document.querySelector('form')
 
         form.addEventListener('submit', (e) => {
             e.preventDefault()
+
             
             const obj = {
                 user : client,
@@ -357,10 +364,12 @@
             console.log(obj)
 
             fetch(`http://localhost:8585/user/bookClass/${classID}`, {
+
                 method : "POST", 
                 headers : {
                     "Content-type" : "application/json"
                 },
+
                 body : JSON.stringify(obj)
             })
             .then(res => res.json())
@@ -376,6 +385,7 @@
                 console.log(err)
                 Inof(false, "Somthing Went Wrong", "some error occured")
             })
+
         })
 
 

@@ -1,7 +1,9 @@
 const trainer_details = document.getElementById("trainer_details");
 
-const trainerID = JSON.parse(sessionStorage.getItem("logedClient"));
-fetch(`http://localhost:8585/trainer/64ba2e0d2cf2c9c1093c9122`)
+
+const trainer = JSON.parse(sessionStorage.getItem("logedClient"));
+fetch(`http://localhost:8585/trainer/${trainer._id}`)
+
   .then((res) => res.json())
   .then((data) => {
     console.log(data);
@@ -42,116 +44,441 @@ fetch(`http://localhost:8585/trainer/64ba2e0d2cf2c9c1093c9122`)
   .catch((err) => console.log(err));
 
 // CLASSES
+
+
+const createBtn = document.getElementById("createBtn");
+const classFormContainer = document.getElementById("classFormContainer");
+let flag = false;
+createBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (flag == false) {
+    classFormContainer.innerHTML = "";
+    classFormContainer.setAttribute("style", "display:block");
+    flag = true;
+    const form = document.createElement("form");
+
+    const titleDiv = document.createElement("div");
+    const title_text = document.createElement("p");
+    const title_input = document.createElement("input");
+    title_text.innerHTML = "Title";
+    title_input.setAttribute("placeholder", "title");
+    title_input.setAttribute("id", "title");
+    titleDiv.append(title_text, title_input);
+
+    const seattotalDiv = document.createElement("div");
+    const seattotal_text = document.createElement("p");
+    const seattotal_input = document.createElement("input");
+    seattotal_text.innerHTML = "seatTotal";
+    seattotal_input.setAttribute("placeholder", "seatTotal");
+    seattotal_input.setAttribute("id", "seatTotal");
+    seattotalDiv.append(seattotal_text, seattotal_input);
+
+    const seatOccupiedDiv = document.createElement("div");
+    const seatOccupied_text = document.createElement("p");
+    const seatOccupied_input = document.createElement("input");
+    seatOccupied_text.innerHTML = "seatOccupied";
+    seatOccupied_input.setAttribute("placeholder", "seatOccupied");
+    seatOccupied_input.setAttribute("id", "seatOccupied");
+    seatOccupiedDiv.append(seatOccupied_text, seatOccupied_input);
+
+    const priceDiv = document.createElement("div");
+    const price_text = document.createElement("p");
+    const price_input = document.createElement("input");
+    price_text.innerHTML = "price";
+    price_input.setAttribute("placeholder", "price");
+    price_input.setAttribute("id", "price");
+    priceDiv.append(price_text, price_input);
+
+    const activityDiv = document.createElement("div");
+    const activity_text = document.createElement("p");
+    const activity_input = document.createElement("input");
+    activity_text.innerHTML = "Activity";
+    activity_input.setAttribute("placeholder", "activity");
+    activity_input.setAttribute("id", "activity");
+    activityDiv.append(activity_text, activity_input);
+
+    const venueDiv = document.createElement("div");
+    const venue_text = document.createElement("p");
+    const venue_input = document.createElement("input");
+    venue_input.setAttribute("placeholder", "venue");
+    venue_input.setAttribute("id", "venue");
+    venueDiv.append(venue_text, venue_input);
+
+    const linkDiv = document.createElement("div");
+    const link_text = document.createElement("p");
+    const link_input = document.createElement("input");
+    link_text.innerHTML = "Link";
+    link_input.setAttribute("placeholder", "link");
+    link_input.setAttribute("id", "link");
+    linkDiv.append(link_text, link_input);
+
+    const durationDiv = document.createElement("div");
+    const duration_text = document.createElement("p");
+    const duration_input = document.createElement("input");
+    duration_text.innerHTML = "Duration";
+    duration_input.setAttribute("placeholder", "duration");
+    duration_input.setAttribute("id", "duration");
+    durationDiv.append(duration_text, duration_input);
+
+    const imageDiv = document.createElement("div");
+    const image_text = document.createElement("p");
+    const image_input = document.createElement("input");
+    image_text.innerHTML = "Image";
+    image_input.setAttribute("placeholder", "image");
+    image_input.setAttribute("id", "image");
+    imageDiv.append(image_text, image_input);
+
+    const classDateDiv = document.createElement("div");
+    const classDate_text = document.createElement("p");
+    const classDate_input = document.createElement("input");
+    classDate_text.innerHTML = "ClassDate";
+    classDate_input.setAttribute("placeholder", "classDate");
+    classDate_input.setAttribute("id", "classDate");
+    classDate_input.setAttribute("type", "date");
+    classDateDiv.append(classDate_text, classDate_input);
+
+    const classTimeDiv = document.createElement("div");
+    const classTime_text = document.createElement("p");
+    const classTime_input = document.createElement("input");
+    classTime_text.innerHTML = "ClassTime";
+    classTime_input.setAttribute("placeholder", "classTime");
+    classTime_input.setAttribute("id", "classTime");
+    classTime_input.setAttribute("type", "time");
+    classTimeDiv.append(classTime_text, classTime_input);
+
+    const submit = document.createElement("button");
+    submit.innerHTML = "Submit";
+    submit.addEventListener("click", (e) => {
+      e.preventDefault();
+      createClass();
+    });
+
+    form.append(
+      titleDiv,
+      seattotalDiv,
+      seatOccupiedDiv,
+      priceDiv,
+      activityDiv,
+      venueDiv,
+      linkDiv,
+      durationDiv,
+      imageDiv,
+      classDateDiv,
+      classTimeDiv,
+      submit
+    );
+    classFormContainer.append(form);
+  } else {
+    classFormContainer.setAttribute("style", "display:none");
+    flag = false;
+  }
+});
+
+function createClass() {
+  const classData = {
+    title: document.getElementById("title").value,
+    seatTotal: parseInt(document.getElementById("seatTotal").value),
+    seatOccupied: parseInt(document.getElementById("seatOccupied").value),
+    price: parseFloat(document.getElementById("price").value),
+    activity: document.getElementById("activity").value,
+    venue: document.getElementById("venue").value,
+    //Link: document.getElementById("Link").value,
+    duration: document.getElementById("duration").value,
+    image: document.getElementById("image").value,
+    trainerID: trainer._id,
+    trainerName: trainer.name,
+    trainerEmail: trainer.email,
+
+    classDate: new Date(document.getElementById("classDate").value),
+    classTime: new Date(document.getElementById("classTime").value),
+    users: [],
+  };
+
+  console.log(classData);
+
+  fetch("http://localhost:8585/trainer/createClass", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(classData),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Class created:", data);
+      alert("Class created");
+
+      resetClassForm();
+    })
+    .catch((error) => {
+      console.error("Error creating class:", error.message);
+      // Handle error here, e.g., display an error message to the user
+    });
+}
+
+// Function to reset the class form after class creation
+function resetClassForm() {
+  document.getElementById("title").value = "";
+  document.getElementById("seatTotal").value = "";
+  document.getElementById("seatOccupied").value = "";
+  document.getElementById("price").value = "";
+  document.getElementById("activity").value = "";
+  document.getElementById("venue").value = "";
+  document.getElementById("Link").value = "";
+  document.getElementById("duration").value = "";
+  document.getElementById("image").value = "";
+
+  document.getElementById("classDate").value = "";
+  document.getElementById("classTime").value = "";
+}
+
+//classes divs
 const classes = document.getElementById("classes");
-const closeModal = document.getElementById("closeModal");
 
-function showModal() {
-  updateFormModal.style.display = "block";
-}
-
-// Function to hide the modal
-function hideModal() {
-  updateFormModal.style.display = "none";
-}
-
-fetch(`http://localhost:8585/classes/trainer/64bbd32ca2ea094336ae833d`)
+fetch(`http://localhost:8585/classes/trainer/${trainer._id}`)
   .then((res) => res.json())
-  .then((data) =>
-    console.log(data)(
-      (classes.innerHTML = `
-    <div class="classes_container">
-     ${
-       data.classes.length
-         ? data.classes.map(
-             (ele) => ` <div class="individual_class">
-       <p>${ele.title}</p>
-       <p>${ele.price}</p>
-       <p>${ele.activity}</p>           
-       <button id="update">Update</button>
-       <div id="modal_form"></div>
-       <button>Delete</button>
-         </div>`
-           )
-         : `<h2 class="message">Your created classes will be shown here</h2>`
-     }
-    </div>
-  `)
-    )
-  )
+  .then((data) => {
+    if (data.classes.length) {
+      const classes_container = document.createElement("div");
+      classes_container.setAttribute("id", "classes_container");
+      data.classes.map((ele) => {
+        const individual_class = document.createElement("div");
+        individual_class.setAttribute("id", "individual_class");
+        const title = document.createElement("p");
+        title.innerHTML = ele.title;
+        const price = document.createElement("p");
+        price.innerHTML = ele.price;
+        const activity = document.createElement("p");
+        activity.innerHTML = ele.activity;
+        const update_form = document.createElement("div");
+        update_form.setAttribute("id", "update_form");
+        const update = document.createElement("button");
+        update.innerHTML = "Update";
+        update.setAttribute("id", "update");
+
+        const deleted = document.createElement("button");
+        deleted.innerHTML = "Delete";
+        deleted.setAttribute("id", "delete");
+
+        deleted.addEventListener("click", (e) => {
+          e.preventDefault();
+          fetch(`http://localhost:8585/classes/delete/${ele._id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Class deleted:", data);
+              alert("Class deleted");
+            })
+            .catch((error) => {
+              console.error("Error deleting class:", error.message);
+              // Handle error here, e.g., display an error message to the user
+            });
+        });
+
+        update.addEventListener("click", (e) => {
+          e.preventDefault();
+
+          sessionStorage.setItem("classID", ele._id);
+          if (flag == false) {
+            update_form.innerHTML = "";
+            update_form.setAttribute("style", "display:block");
+            update_form.setAttribute("style", "width: 200px");
+            update_form.setAttribute("style", "z-index: 1");
+            flag = true;
+            const form = document.createElement("form");
+
+            const titleDiv = document.createElement("div");
+            const title_text = document.createElement("p");
+            const title_input = document.createElement("input");
+            title_text.innerHTML = "Title";
+            title_input.setAttribute("placeholder", "title");
+            title_input.setAttribute("id", "title");
+            //title_input.setAttribute("value", ele.title);
+
+            titleDiv.append(title_text, title_input);
+
+            const seattotalDiv = document.createElement("div");
+            const seattotal_text = document.createElement("p");
+            const seattotal_input = document.createElement("input");
+            seattotal_text.innerHTML = "seatTotal";
+            seattotal_input.setAttribute("placeholder", "seatTotal");
+            seattotal_input.setAttribute("id", "seatTotal");
+            //seattotal_input.setAttribute("value", ele.seatTotal);
+            seattotalDiv.append(seattotal_text, seattotal_input);
+
+            const seatOccupiedDiv = document.createElement("div");
+            const seatOccupied_text = document.createElement("p");
+            const seatOccupied_input = document.createElement("input");
+            seatOccupied_text.innerHTML = "seatOccupied";
+            seatOccupied_input.setAttribute("placeholder", "seatOccupied");
+            seatOccupied_input.setAttribute("id", "seatOccupied");
+            //seatOccupied_input.setAttribute("value", ele.seatOccupied);
+            seatOccupiedDiv.append(seatOccupied_text, seatOccupied_input);
+
+            const priceDiv = document.createElement("div");
+            const price_text = document.createElement("p");
+            const price_input = document.createElement("input");
+            price_text.innerHTML = "price";
+            price_input.setAttribute("placeholder", "price");
+            price_input.setAttribute("id", "price");
+            //price_input.setAttribute("value", ele.price);
+            priceDiv.append(price_text, price_input);
+
+            const activityDiv = document.createElement("div");
+            const activity_text = document.createElement("p");
+            const activity_input = document.createElement("input");
+            activity_text.innerHTML = "Activity";
+            activity_input.setAttribute("placeholder", "activity");
+            activity_input.setAttribute("id", "activity");
+            // activity_input.setAttribute("value", ele.activity);
+            activityDiv.append(activity_text, activity_input);
+
+            const venueDiv = document.createElement("div");
+            const venue_text = document.createElement("p");
+            const venue_input = document.createElement("input");
+            venue_input.setAttribute("placeholder", "venue");
+            venue_input.setAttribute("id", "venue");
+            //venue_input.setAttribute("value", ele.venue);
+            venueDiv.append(venue_text, venue_input);
+
+            const linkDiv = document.createElement("div");
+            const link_text = document.createElement("p");
+            const link_input = document.createElement("input");
+            link_text.innerHTML = "Link";
+            link_input.setAttribute("placeholder", "link");
+            link_input.setAttribute("id", "link");
+            // link_input.setAttribute("value", ele.link);
+            linkDiv.append(link_text, link_input);
+
+            const durationDiv = document.createElement("div");
+            const duration_text = document.createElement("p");
+            const duration_input = document.createElement("input");
+            duration_text.innerHTML = "Duration";
+            duration_input.setAttribute("placeholder", "duration");
+            duration_input.setAttribute("id", "duration");
+            // duration_input.setAttribute("value", ele.duration);
+            durationDiv.append(duration_text, duration_input);
+
+            const imageDiv = document.createElement("div");
+            const image_text = document.createElement("p");
+            const image_input = document.createElement("input");
+            image_text.innerHTML = "Image";
+            image_input.setAttribute("placeholder", "image");
+            image_input.setAttribute("id", "image");
+            // image_input.setAttribute("value", ele.image);
+            imageDiv.append(image_text, image_input);
+
+            const classDateDiv = document.createElement("div");
+            const classDate_text = document.createElement("p");
+            const classDate_input = document.createElement("input");
+            classDate_text.innerHTML = "ClassDate";
+            classDate_input.setAttribute("placeholder", "classDate");
+            classDate_input.setAttribute("id", "classDate");
+            classDate_input.setAttribute("type", "date");
+            //classDate_input.setAttribute("value", ele.classDate);
+            classDateDiv.append(classDate_text, classDate_input);
+
+            const classTimeDiv = document.createElement("div");
+            const classTime_text = document.createElement("p");
+            const classTime_input = document.createElement("input");
+            classTime_text.innerHTML = "ClassTime";
+            classTime_input.setAttribute("placeholder", "classTime");
+            classTime_input.setAttribute("id", "classTime");
+            classTime_input.setAttribute("type", "time");
+            // classTime_input.setAttribute("value", ele.classTime);
+            classTimeDiv.append(classTime_text, classTime_input);
+
+            const update = document.createElement("button");
+            update.innerHTML = "Update";
+            update.addEventListener("click", (e) => {
+              e.preventDefault();
+              updateClass();
+            });
+
+            form.append(
+              titleDiv,
+              seattotalDiv,
+              seatOccupiedDiv,
+              priceDiv,
+              activityDiv,
+              venueDiv,
+              linkDiv,
+              durationDiv,
+              imageDiv,
+              classDateDiv,
+              classTimeDiv,
+              update
+            );
+            update_form.append(form);
+          } else {
+            update_form.setAttribute("style", "display:none");
+            flag = false;
+          }
+        });
+        individual_class.append(
+          title,
+          price,
+          activity,
+          update_form,
+          update,
+
+          deleted
+        );
+        classes_container.append(individual_class);
+      });
+      classes.append(classes_container);
+    } else {
+      const message = document.createElement("h2");
+      message.innerHTML = "Created Classes will be shown here";
+      classes.append(message);
+    }
+  })
   .catch((err) => console.log(err));
 
-//  ${
-//    (sessionStorage.setItem("classID", JSON.stringify(ele._id)),
-//    sessionStorage.setItem("class", JSON.stringify(ele)))
-//  }
-try {
-  const update = document.getElementById("update");
-  console.log(update);
-  update.addEventListener("click", modalClass);
-} catch (err) {
-  console.log(err.message);
+function updateClass() {
+  const classData = {
+    title: document.getElementById("title").value,
+    seatTotal: parseInt(document.getElementById("seatTotal").value),
+    seatOccupied: parseInt(document.getElementById("seatOccupied").value),
+    price: parseFloat(document.getElementById("price").value),
+    activity: document.getElementById("activity").value,
+    venue: document.getElementById("venue").value,
+    //Link: document.getElementById("Link").value,
+    duration: document.getElementById("duration").value,
+    image: document.getElementById("image").value,
+
+    trainerID: trainer._id,
+    trainerName: trainer.name,
+    trainerEmail: trainer.email,
+    classDate: new Date(document.getElementById("classDate").value),
+    classTime: new Date(document.getElementById("classTime").value),
+    users: [],
+  };
+  console.log(classData);
+
+  const classID = sessionStorage.getItem("classID");
+
+  fetch(`http://localhost:8585/trainer/updateClass/${classID}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(classData),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Class updated:", data);
+      alert("Class updated");
+
+      resetClassForm();
+    })
+    .catch((error) => {
+      console.error("Error creating class:", error.message);
+      // Handle error here, e.g., display an error message to the user
+    });
 }
 
-function modalClass(e) {
-  e.preventDefault();
-
-  const modal_form = document.getElementById("modal_form");
-  const Class = JSON.parse(sessionStorage.getItem("class"));
-
-  modal_form.innerHTML =
-    // <!-- The modal -->
-    `<div id="updateFormModal" class="modal">
-      <div class="modal-content">
-        <span id="closeModal" style="float: right; cursor: pointer;">&times;</span>
-        <h2>Update Form</h2>
-        <form id="updateForm">
-         
-          <label for="title">Title:</label>
-          <input type="text" id="title" name="title" placeholder=${Class.title} value=${e.target.value} required>
-          
-          <label for="price">Price:</label>
-          <input type="number" id="price" name="price" placeholder=${Class.price} value=${e.target.value} required>
-          
-          <label for="activity">Activity:</label>
-          <input type="text" id="activity" name="activity" placeholder=${Class.activity} value=${e.target.value} required>
-  
-          <label for="venue">Venue:</label>
-          <input type="text" id="venue" name="venue" placeholder=${Class.venue} value=${e.target.value} required>
-          
-          <label for="duration">Duration:</label>
-          <input type="text" id="duration" name="duration" placeholder=${Class.duration} value=${e.target.value} required>
-  
-          <label for="classDate">classDate:</label>
-          <input type="date" id="classDate" name="classDate" placeholder=${Class.classDate} value=${e.target.value} required>
-  
-          <label for="classTime">classTime:</label>
-          <input type="text" id="classTime" name="classTime" placeholder=${Class.classTime} value=${e.target.value} required>
-          <button type="submit">Submit</button>
-        </form>
-      </div>
-    </div>`;
-
-  showModal();
-}
-
-//closeModal.addEventListener("click", hideModal);     //for now
-
-const updateForm = document.getElementById("updateForm");
-// updateForm.addEventListener("submit", function (event) {  //for now
-//   event.preventDefault();
-//   // Add code to handle form submission here
-//   const form = event.target; // Get the form element
-//   const formData = new FormData(form);
-//   const classID = localStorage.getItem("classID");
-//   fetch(`http://localhost:8585/classes/trainer/updateClass/${classID}`, {
-//     method: "PATCH",
-//     headers: {
-//       // Add any necessary headers here, e.g., 'Content-Type'
-//       "Content-Type": "application/json", // Assuming you're sending JSON data
-//     },
-//     body: JSON.stringify(Object.fromEntries(formData)),
-//   })
-//     .then((res) => res.json())
-//     .then((data) => alert(data.message))
-//     .catch((err) => console.log(err));
-// });

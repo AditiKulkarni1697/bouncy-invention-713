@@ -9,6 +9,7 @@ const redisClient = redis.createClient({
 
 redisClient.connect(); //temperory changes
 
+
 redisClient.on("error", (error) => {
   console.log(error.message);
 });

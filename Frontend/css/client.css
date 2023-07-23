@@ -2,7 +2,9 @@
     margin: 0px;
     /* font-weight: bold; */
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
     background-color: rgb(4, 3, 3);
+
 }
 
 button{
@@ -85,7 +87,9 @@ nav img{
 }
 
 #btns > button{
+
     font-size: x-large;
+
     cursor: pointer;
     border: 3px solid black ;
     height: 60px;
@@ -173,12 +177,15 @@ nav img{
 
 .book-button {
     flex: 1;
+
     font-size: xx-large;
+
     text-align: center;
 }
 
 .book-button button {
     padding: 8px 20px;
+
     background-color: #0f80f9;
     color: #ffff;
     border-radius: 5px;
@@ -186,4 +193,5 @@ nav img{
     font-size: x-large;
     cursor: pointer;
     /* font-size: 16px; */
+
 }

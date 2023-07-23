@@ -2,15 +2,27 @@
     margin: 0px;
     /* font-weight: bold; */
     /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
+
     background-color: black;
+
     
 }
 
 button{
-    background-color: red;
+
+
+    background-color: blue;
     padding: 8px;
     color: white;
     border: none;
+    height: 30px;
+}
+
+option, select, input{
+    color: white;
+    width: 60%;
+    padding: 8px;
+
 }
 .nav{
     display: grid;
@@ -58,15 +70,42 @@ button{
 
 /* classes */
 
-.classes_container{
+
+.create-class-container {
+    flex: 1;
+    background-color: black;
+    padding: 20px;
+  }
+  
+  .class-details-container {
+    flex: 2;
+    padding: 20px;
+  }
+  
+  .class-form-container {
+    display: none;
+    padding: 20px;
+    border: 3px solid blue;
+    width: 60%;
+    background-color: black;
+  }
+
+  .createBtn{
+    
+  }
+
+#classes_container{
+
     width: 90%;
     margin: auto;
     color: white;
 }
 
-.individual_class{
+
+#individual_class{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 0.2fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 5fr 1fr 1fr;
+
     border: 2px solid blue;
     padding: 25px;
     margin: 10px;

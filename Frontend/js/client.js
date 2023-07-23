@@ -1,6 +1,7 @@
 // USER DETAILS
 let user = JSON.parse(sessionStorage.getItem('logedClient'))
 
+
 let logoutbtn = document.getElementById('logout')
 logoutbtn.addEventListener('click',()=>{ 
   sessionStorage.clear()
@@ -9,6 +10,7 @@ logoutbtn.addEventListener('click',()=>{
 
 if(!user) {
   window.location.href = `../index.html`
+
 }else{
   getData()
 }
@@ -80,23 +82,29 @@ home.addEventListener('click', switchHome)
 
 
 function switchHome(){
+
   window.location.href = `../index.html`
 }
 
 function switchService(){
   window.location.href = `../index.html`
+
 }
 
 function switchLogout(){
   sessionStorage.clear()
+
   window.location.href = `../index.html`
+
 }
 
 function BookClass(){
   fetch(`http://localhost:8585/classes`)
   .then(res => res.json())
   .then(data => {
+
     console.log(data)
+
     if(data.classes.length == 0){
       document.getElementById('showClass').innerHTML = "<h2 style='color:white; text-align:center; margin-top:40px'>No Available Session</h2>"
     }
@@ -112,7 +120,9 @@ function showOwnClass(){
   fetch(`http://localhost:8585/classes/users/${user._id}`)
   .then(res => res.json())
   .then(data => {
+
     console.log(data)
+
     if(data.classes.length == 0){
       document.getElementById('showClass').innerHTML = "<h2 style='color:white; text-align:center; margin-top:40px'>No Booked Session</h2>"
     }
@@ -125,7 +135,7 @@ function showOwnClass(){
 
 showOwnClass()
 async function renderderAllData(allData, isown) {
-  console.log(allData,"defwfw")
+
   let divForRender = document.getElementById('showClass')
   divForRender.innerHTML = ""
   let map_allData = allData.map(el => `                            
@@ -142,7 +152,9 @@ async function renderderAllData(allData, isown) {
       </div>
 
       <div class="book-button">
+
           <button class='bookBtn' id="${el._id}">${isown? 'Details': (el.users.includes(user._id))? "Booked" : 'Book Session'}</button>
+
       </div>
   </div>
       </div>`
@@ -156,6 +168,7 @@ async function renderderAllData(allData, isown) {
     if(btn.textContent != 'Details' && btn.textContent != 'Booked' ){
       btn.addEventListener('click', (e)=>{
         window.location.href =`./card.html?classId=${e.target.id}`
+
       })
     }
   }

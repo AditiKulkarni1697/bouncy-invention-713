@@ -16,7 +16,7 @@ if(!user) {
 }
 
 function getData(){
-  fetch('http://localhost:8585/user/'+user._id)
+  fetch('https://elegant-tunic-frog.cyclic.app/user/'+user._id)
   .then(res =>res.json())
   .then(data => {
     user = data.user;
@@ -99,7 +99,7 @@ function switchLogout(){
 }
 
 function BookClass(){
-  fetch(`http://localhost:8585/classes`)
+  fetch(`https://elegant-tunic-frog.cyclic.app/classes`)
   .then(res => res.json())
   .then(data => {
 
@@ -117,7 +117,7 @@ function BookClass(){
 
 function showOwnClass(){
   
-  fetch(`http://localhost:8585/classes/users/${user._id}`)
+  fetch(`https://elegant-tunic-frog.cyclic.app/classes/users/${user._id}`)
   .then(res => res.json())
   .then(data => {
 

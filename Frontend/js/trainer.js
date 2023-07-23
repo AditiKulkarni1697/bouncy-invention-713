@@ -1,13 +1,38 @@
 const trainer_details = document.getElementById("trainer_details");
 
+const logout = document.getElementById('logout')
+const service = document.getElementById('service')
+const home = document.getElementById('home')
 
+
+logout.addEventListener('click', switchLogout)
+service.addEventListener('click', switchService)
+home.addEventListener('click', switchHome)
+
+
+function switchHome(){
+
+  window.location.href = `../index.html`
+}
+
+function switchService(){
+  window.location.href = `../index.html`
+
+}
+
+function switchLogout(){
+  sessionStorage.clear()
+
+  window.location.href = `../index.html`
+
+}
 
 const trainer = JSON.parse(sessionStorage.getItem("logedClient"));
 
 if(!trainer) {
   location.replace('../index.html')
 }
-fetch(`http://localhost:8585/trainer/${trainer._id}`)
+fetch(`https://elegant-tunic-frog.cyclic.app/trainer/${trainer._id}`)
 
   .then((res) => res.json())
   .then((data) => {
@@ -196,7 +221,7 @@ function createClass() {
 
   console.log(classData,'sfdfsfs');
 
-  fetch("http://localhost:8585/trainer/createClass", {
+  fetch("https://elegant-tunic-frog.cyclic.app/trainer/createClass", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -251,7 +276,7 @@ function resetClassForm() {
 //classes divs
 const classes = document.getElementById("classes");
 
-fetch(`http://localhost:8585/classes/trainer/${trainer._id}`)
+fetch(`https://elegant-tunic-frog.cyclic.app/classes/trainer/${trainer._id}`)
   .then((res) => res.json())
   .then((data) => {
     if (data.classes.length) {
@@ -280,7 +305,7 @@ fetch(`http://localhost:8585/classes/trainer/${trainer._id}`)
 
         deleted.addEventListener("click", (e) => {
           e.preventDefault();
-          fetch(`http://localhost:8585/classes/delete/${ele._id}`, {
+          fetch(`https://elegant-tunic-frog.cyclic.app/classes/delete/${ele._id}`, {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
@@ -523,7 +548,7 @@ function updateClass() {
 
   const classID = sessionStorage.getItem("classID");
 
-  fetch(`http://localhost:8585/trainer/updateClass/${classID}`, {
+  fetch(`https://elegant-tunic-frog.cyclic.app/trainer/updateClass/${classID}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

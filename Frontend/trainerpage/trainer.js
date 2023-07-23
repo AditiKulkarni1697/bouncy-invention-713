@@ -1,7 +1,7 @@
 const trainer_details = document.getElementById("trainer_details");
 
-const trainerID = "64ba2e0d2cf2c9c1093c9122";
-fetch(`http://localhost:8585/trainer/${trainerID}`)
+const trainerID = JSON.parse(sessionStorage.getItem("logedClient"));
+fetch(`http://localhost:8585/trainer/64ba2e0d2cf2c9c1093c9122`)
   .then((res) => res.json())
   .then((data) => {
     console.log(data);
@@ -25,7 +25,6 @@ fetch(`http://localhost:8585/trainer/${trainerID}`)
         <p>email : ${data.Trainer.email}</p>
         <p>Ph No. : ${data.Trainer.phone}</p>
         <p>City : ${data.Trainer.city}</p>
-        <p>Age : ${data.Trainer.age}</p>
         <p>Gender : ${data.Trainer.gender}</p>
         <div>
         <li>
@@ -55,65 +54,20 @@ function hideModal() {
   updateFormModal.style.display = "none";
 }
 
-const modalClass = (e) => {
-  e.preventDefault();
-
-  const modal_form = document.getElementById("modal_form");
-  const Class = JSON.parse(localStorage.getItem("class"));
-
-  modal_form.innerHTML =
-    // <!-- The modal -->
-    `<div id="updateFormModal" class="modal">
-    <div class="modal-content">
-      <span id="closeModal" style="float: right; cursor: pointer;">&times;</span>
-      <h2>Update Form</h2>
-      <form id="updateForm">
-       
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" placeholder=${Class.title} value=${e.target.value} required>
-        
-        <label for="price">Price:</label>
-        <input type="number" id="price" name="price" placeholder=${Class.price} value=${e.target.value} required>
-        
-        <label for="activity">Activity:</label>
-        <input type="text" id="activity" name="activity" placeholder=${Class.activity} value=${e.target.value} required>
-
-        <label for="venue">Venue:</label>
-        <input type="text" id="venue" name="venue" placeholder=${Class.venue} value=${e.target.value} required>
-        
-        <label for="duration">Duration:</label>
-        <input type="text" id="duration" name="duration" placeholder=${Class.duration} value=${e.target.value} required>
-
-        <label for="classDate">classDate:</label>
-        <input type="date" id="classDate" name="classDate" placeholder=${Class.classDate} value=${e.target.value} required>
-
-        <label for="classTime">classTime:</label>
-        <input type="text" id="classTime" name="classTime" placeholder=${Class.classTime} value=${e.target.value} required>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-  </div>`;
-
-  showModal();
-};
-
-fetch(`http://localhost:8585/classes/trainer/64ba2e0d2cf2c9c1093c9122`)
+fetch(`http://localhost:8585/classes/trainer/64bbd32ca2ea094336ae833d`)
   .then((res) => res.json())
-  .then(
-    (data) =>
+  .then((data) =>
+    console.log(data)(
       (classes.innerHTML = `
     <div class="classes_container">
      ${
-       data.length
-         ? data.map(
+       data.classes.length
+         ? data.classes.map(
              (ele) => ` <div class="individual_class">
        <p>${ele.title}</p>
        <p>${ele.price}</p>
        <p>${ele.activity}</p>           
-       <button onclick=${modalClass(ele)}>
-       ${localStorage.setItem("classID", ele._id)}
-       ${localStorage.setItem("class", JSON.stringify(ele))}
-       Update</button>
+       <button id="update">Update</button>
        <div id="modal_form"></div>
        <button>Delete</button>
          </div>`
@@ -122,27 +76,82 @@ fetch(`http://localhost:8585/classes/trainer/64ba2e0d2cf2c9c1093c9122`)
      }
     </div>
   `)
+    )
   )
   .catch((err) => console.log(err));
 
-closeModal.addEventListener("click", hideModal);
+//  ${
+//    (sessionStorage.setItem("classID", JSON.stringify(ele._id)),
+//    sessionStorage.setItem("class", JSON.stringify(ele)))
+//  }
+try {
+  const update = document.getElementById("update");
+  console.log(update);
+  update.addEventListener("click", modalClass);
+} catch (err) {
+  console.log(err.message);
+}
+
+function modalClass(e) {
+  e.preventDefault();
+
+  const modal_form = document.getElementById("modal_form");
+  const Class = JSON.parse(sessionStorage.getItem("class"));
+
+  modal_form.innerHTML =
+    // <!-- The modal -->
+    `<div id="updateFormModal" class="modal">
+      <div class="modal-content">
+        <span id="closeModal" style="float: right; cursor: pointer;">&times;</span>
+        <h2>Update Form</h2>
+        <form id="updateForm">
+         
+          <label for="title">Title:</label>
+          <input type="text" id="title" name="title" placeholder=${Class.title} value=${e.target.value} required>
+          
+          <label for="price">Price:</label>
+          <input type="number" id="price" name="price" placeholder=${Class.price} value=${e.target.value} required>
+          
+          <label for="activity">Activity:</label>
+          <input type="text" id="activity" name="activity" placeholder=${Class.activity} value=${e.target.value} required>
+  
+          <label for="venue">Venue:</label>
+          <input type="text" id="venue" name="venue" placeholder=${Class.venue} value=${e.target.value} required>
+          
+          <label for="duration">Duration:</label>
+          <input type="text" id="duration" name="duration" placeholder=${Class.duration} value=${e.target.value} required>
+  
+          <label for="classDate">classDate:</label>
+          <input type="date" id="classDate" name="classDate" placeholder=${Class.classDate} value=${e.target.value} required>
+  
+          <label for="classTime">classTime:</label>
+          <input type="text" id="classTime" name="classTime" placeholder=${Class.classTime} value=${e.target.value} required>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>`;
+
+  showModal();
+}
+
+//closeModal.addEventListener("click", hideModal);     //for now
 
 const updateForm = document.getElementById("updateForm");
-updateForm.addEventListener("submit", function (event) {
-  event.preventDefault();
-  // Add code to handle form submission here
-  const form = event.target; // Get the form element
-  const formData = new FormData(form);
-  const classID = localStorage.getItem("classID");
-  fetch(`http://localhost:8585/classes/trainer/updateClass/${classID}`, {
-    method: "PATCH",
-    headers: {
-      // Add any necessary headers here, e.g., 'Content-Type'
-      "Content-Type": "application/json", // Assuming you're sending JSON data
-    },
-    body: JSON.stringify(Object.fromEntries(formData)),
-  })
-    .then((res) => res.json())
-    .then((data) => alert(data.message))
-    .catch((err) => console.log(err));
-});
+// updateForm.addEventListener("submit", function (event) {  //for now
+//   event.preventDefault();
+//   // Add code to handle form submission here
+//   const form = event.target; // Get the form element
+//   const formData = new FormData(form);
+//   const classID = localStorage.getItem("classID");
+//   fetch(`http://localhost:8585/classes/trainer/updateClass/${classID}`, {
+//     method: "PATCH",
+//     headers: {
+//       // Add any necessary headers here, e.g., 'Content-Type'
+//       "Content-Type": "application/json", // Assuming you're sending JSON data
+//     },
+//     body: JSON.stringify(Object.fromEntries(formData)),
+//   })
+//     .then((res) => res.json())
+//     .then((data) => alert(data.message))
+//     .catch((err) => console.log(err));
+// });

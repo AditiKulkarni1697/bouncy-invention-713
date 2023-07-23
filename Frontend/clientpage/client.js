@@ -1,17 +1,30 @@
 // USER DETAILS
+let user = JSON.parse(sessionStorage.getItem('logedClient'))
 
-const user_details = document.getElementById("user_details");
 
-const userID = 1;
-fetch(`https://jsonplaceholder.typicode.com/users/1`)
-  .then((res) => res.json())
-  .then((data) => {
-    console.log(data);
 
-    user_details.innerHTML = `<div>
+if(!user) {
+  window.location.href = `../HomePage/index.html`
+}else{
+  getData()
+}
+
+function getData(){
+  fetch('http://localhost:8585/user/'+user._id)
+  .then(res =>res.json())
+  .then(data => {
+    user = data.user;
+    console.log(user)
+    sessionStorage.setItem('logedClient', JSON.stringify(user))
+  })
+  .catch(ERR=>console.log(ERR))    
+  
+
+  const user_details = document.getElementById("user_details");
+
+  user_details.innerHTML = `<div>
         ${
-          data.name === "Leanne Graham"
-            ? `<img
+          (user.gender == 'male')? `<img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGP0LOh8SpUJCGgsBxnYVT1lvY4DNW_f_lBA&usqp=CAU"
               alt="male_avatar"
               class="img"
@@ -23,55 +36,154 @@ fetch(`https://jsonplaceholder.typicode.com/users/1`)
             />`
         }
         
-        <p>Name:${data.name}</p>
-        <p>email:${data.email}</p>
-        <p>City:{data.city}</p>
-        <p>Age:{data.age}</p>
-        <p>Gender:{data.gender}</p>
-        <p>Height:{data.height}</p>
-        <p>Weight:{data.weight}</p>
-        <p>CardDetails:{data.cardDetails}</p>
+        <p>Name : ${user.name}</p>
+        <p>Email : ${user.email}</p>
+        <p>City : ${user.city}</p>
+        <p>Age : ${user.age}</p>
+        <p>Gender : ${user.gender}</p>
+        <p>Height : ${user.height}</p>
+        <p>Weight : ${user.weight}</p>
         <div>
-         {classes.map((ele)=>{
-          return  <li><ul>{ele}</ul></li>
-         })}
+         ${user.classes.map((ele)=> `<li><ul>${ele}</ul></li>`).join('')}
         </div>
        </div>
        
        `;
+}
+
+const ownClassbtn = document.getElementById('ownClass')
+const BookClassbtn = document.getElementById('bookClass')
+
+ownClassbtn.addEventListener('click', ()=>{
+  showOwnClass()
+})
+BookClassbtn.addEventListener('click', ()=>{
+  BookClass()
+})
+
+const logout = document.getElementById('logout')
+const service = document.getElementById('service')
+const home = document.getElementById('home')
+
+
+logout.addEventListener('click', switchLogout)
+service.addEventListener('click', switchService)
+home.addEventListener('click', switchHome)
+
+
+function switchHome(){
+  window.location.href = `../HomePage/index.html`
+}
+
+function switchService(){
+  window.location.href = `../HomePage/index.html`
+}
+
+function switchLogout(){
+  sessionStorage.clear()
+  window.location.href = `../HomePage/index.html`
+}
+
+function BookClass(){
+  fetch(`http://localhost:8585/classes`)
+  .then(res => res.json())
+  .then(data => {
+    // console.log(data)
+    if(data.classes.length == 0){
+      document.getElementById('showClass').innerHTML = "<h2 style='color:white; text-align:center; margin-top:40px'>No Available Session</h2>"
+    }
+    else{
+      renderderAllData(data.classes, false)
+    }
   })
-  .catch((err) => console.log(err));
+  .catch(err=> console.log(err))
+}
+
+function showOwnClass(){
+  
+  fetch(`http://localhost:8585/classes/users/${user._id}`)
+  .then(res => res.json())
+  .then(data => {
+    // console.log(data)
+    if(data.classes.length == 0){
+      document.getElementById('showClass').innerHTML = "<h2 style='color:white; text-align:center; margin-top:40px'>No Booked Session</h2>"
+    }
+    else{
+      renderderAllData(data.classes, true)
+    }
+  })
+  .catch(err=> console.log(err))
+}
+
+showOwnClass()
+async function renderderAllData(allData, isown) {
+  // console.log(allData)
+  let divForRender = document.getElementById('showClass')
+  divForRender.innerHTML = ""
+  let map_allData = allData.map(el => `                            
+      <div class="class-card">
+      <div class="class-image">
+          <img src="../image/boxing2.jpg" width="100">
+      </div>
+
+     <div class="class-details">
+          <h3>Class Name: ${el.title} </h3>
+          <p>Instructor: ${el.trainerName}</p>
+          <p>Date: ${new Date().getDate() }-07-2023</p>
+          <p>Time: 10:00 AM</p>
+      </div>
+
+      <div class="book-button">
+          <button class='bookBtn' id="${el._id}">${isown? 'Details': (user.classes.includes(el._id))? "Booked" : 'Book Session'}</button>
+      </div>
+  </div>
+      </div>`
+  ).join("")
+
+
+  divForRender.innerHTML = map_allData
+  let btns = document.querySelectorAll('.bookBtn')
+
+  for(let btn of btns){
+    if(btn.textContent != 'Details'){
+      btn.addEventListener('click', (e)=>{
+        window.location.href =`../paymentpage/card.html/?classId=${e.target.id}`
+      })
+    }
+  }
+}
+
 
 // CLASSES
-const classes = document.getElementById("classes");
+// const classes = document.getElementById("classes");
 
-const bookClass = (classID) => {
-  fetch(`http://localhost:8585/bookClass/${classID}`)
-    .then((res) => res.json())
-    .then((data) => alert(data.message))
-    .catch((err) => console.log(err));
-};
+// const bookClass = (classID) => {
+//   fetch(`http://localhost:8585/bookClass/${classID}`)
+//     .then((res) => res.json())
+//     .then((data) => alert(data.message))
+//     .catch((err) => console.log(err));
+// // };
 
-fetch(`http://localhost:8585/classes/users/${userID}`)
-  .then((res) => res.json())
-  .then(
-    (data) =>
-      (classes.innerHTML = `
-    <div class="classes_container">
-     ${
-       data.classes.length
-         ? data.classes.map(
-             (ele) => ` <div class="individual_class">
-        <p>${ele.title}</p>
-        <p>${ele.price}</p>
-        <p>${ele.activity}</p>
+// fetch(`http://localhost:8585/classes/users/${}`)
+//   .then((res) => res.json())
+//   .then(
+//     (data) =>
+//       (classes.innerHTML = `
+//     <div class="classes_container">
+//      ${
+//        data.classes.length
+//          ? data.classes.map(
+//              (ele) => ` <div class="individual_class">
+//         <p>${ele.title}</p>
+//         <p>${ele.price}</p>
+//         <p>${ele.activity}</p>
 
-            <button onclick=${bookClass(ele._id)}>Book</button>
-          </div>`
-           )
-         : `<h2 class="message">Available Classes will be shown here</h2>`
-     }
-    </div>
-  `)
-  )
-  .catch((err) => console.log(err));
+//             <button onclick=${bookClass(ele._id)}>Book</button>
+//           </div>`
+//            )
+//          : `<h2 class="message">Available Classes will be shown here</h2>`
+//      }
+//     </div>
+//   `)
+//   )
+//   .catch((err) => console.log(err));

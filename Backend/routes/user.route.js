@@ -145,18 +145,18 @@ userRoute.delete("/delete/:id", async (req, res) => {
     }
 });
 
-userRoute.get('/bookClass/:classID', async (req, res) => {
+userRoute.post('/bookClass/:classID', async (req, res) => {
    let classID = req.params?.classID
+    let user = req.body
    try {
     let Class = await ClassesModel.findById(classID)
-
+    console.log(Class)
     if(Class.seatOccupied == Class.seatTotal) {
         return res.status(400).send({message : "no seats avaible" , isOk : false})
     }
 
-    let updatedClass = await ClassesModel.findByIdAndUpdate({_id : classID},{$push : {classes:Class._id}, seatOccupied : Class.seatOccupied +1});
+    let updatedClass = await ClassesModel.findByIdAndUpdate({_id : classID},{$push : {classes:user._id}, seatOccupied : Class.seatOccupied +1});
     let trainer = await TrainerModel.findById(updatedClass.trainerID)
-    let user = await UserModel.find({email})[0]
     let usermail   = getEmailForBookInfo({Class, user})
     let trainermail = getOtpForUserInfo({Class, user})
     

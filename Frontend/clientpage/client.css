@@ -12,26 +12,42 @@ button{
     border: none;
     font-size: 18px;
 }
+
+/* some changes */
+
 .nav{
-    display: grid;
-    grid-template-columns: 5fr 1fr 1fr 1fr ;
+    padding:  0 80px 0 80;
+    display: flex;
+    justify-content: space-between;
     width: 100%;
+    align-items: center;
     background-color: black;
+    border-bottom: 1px solid blue;
     font-weight: bold;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 .nav >div{
-    
-    width: 20%;
-    text-align: center;
-    display: grid;
-    align-items: center;
+    display: flex;
+    justify-content: space-evenly;
     
 }
 
-.nav a{
-    text-decoration: none;
+#options{
+    display: flex;
+    margin-right: 80px;
 }
+#options p{
+    font-size: larger;
+    cursor: pointer;
+    margin-right: 40px;
+    color: blue;
+}
+
+nav img{
+    margin-left: 30px;
+}
+
+/* changes */
 
 .container{
     display: grid;
@@ -42,11 +58,16 @@ button{
 /* user_details */
 
 #user_details{
-   
-    text-align: center;
     background-color: black;
     color: white;
-    border: 3px solid blue
+    padding: 20px;
+    height: 80vh;
+}
+
+#user_details p{
+    margin-left: 20px;
+    margin-top: 10px;
+    font-size: larger;
 }
 
 .img{
@@ -56,6 +77,29 @@ button{
 }
 
 /* classes */
+
+#btns{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 2px;
+}
+
+#btns > button{
+    cursor: pointer;
+    border: 3px solid black ;
+    height: 60px;
+    background-color: rgb(41, 128, 227);
+}
+
+
+/* #showClass{
+    border-left: 2px solid blue;
+
+} */
+#classes{
+    border-left: 1px solid blue;
+}
+
 
 .classes_container{
     width: 80%;
@@ -84,10 +128,58 @@ button{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     padding: 25px;
-    color: white;
-    margin: auto;
-    
+    color: white;    
 }
 .footer div{
     padding-left: 50px;
+}
+
+
+
+   /* CSS to style the class card */
+   .class-card {
+    width: 90%;
+    color : white;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: auto;
+    margin-top: 60px;
+    
+}
+
+.class-image {
+    /* width: 200px; */
+    flex: 1;
+    max-width: 100%;
+    margin-right: 10px;
+}
+
+.class-image > img{
+    width: 100%;
+    border-radius: 50%;
+}
+.class-details {
+    flex: 2;
+    padding-left: 10px;
+}
+
+.class-details p{
+    margin-top: 8px;
+    font-size: larger;
+}
+
+.book-button {
+    flex: 1;
+    text-align: center;
+}
+
+.book-button button {
+    padding: 8px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
 }

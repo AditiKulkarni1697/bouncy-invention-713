@@ -2,15 +2,16 @@
 
 const user_details = document.getElementById("user_details");
 
-const userID = 1;
-fetch(`https://jsonplaceholder.typicode.com/users/1`)
+//const user = JSON.parse(sessionStorage.getItem("logedClient"));
+//console.log(user);
+fetch(`http://localhost:8585/user/64bbd32ca2ea094336ae833d`)
   .then((res) => res.json())
   .then((data) => {
     console.log(data);
 
     user_details.innerHTML = `<div>
         ${
-          data.name === "Leanne Graham"
+          data.user.gender === "male"
             ? `<img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGP0LOh8SpUJCGgsBxnYVT1lvY4DNW_f_lBA&usqp=CAU"
               alt="male_avatar"
@@ -23,18 +24,22 @@ fetch(`https://jsonplaceholder.typicode.com/users/1`)
             />`
         }
         
-        <p>Name:${data.name}</p>
-        <p>email:${data.email}</p>
-        <p>City:{data.city}</p>
-        <p>Age:{data.age}</p>
-        <p>Gender:{data.gender}</p>
-        <p>Height:{data.height}</p>
-        <p>Weight:{data.weight}</p>
-        <p>CardDetails:{data.cardDetails}</p>
-        <div>
-         {classes.map((ele)=>{
-          return  <li><ul>{ele}</ul></li>
-         })}
+        <p>Name:${data.user.name}</p>
+        <p>email:${data.user.email}</p>
+        <p>City:${data.user.city}</p>
+        <p>Age:${data.user.age}</p>
+        <p>Gender:${data.user.gender}</p>
+        <p>Height:${data.user.height}</p>
+        <p>Weight:${data.user.weight}</p>
+        <p>CardDetails:${data.user.cardDetails}</p>
+        <div>Classes : 
+         ${
+           data.user.classes.length
+             ? data.user.classes.map((ele) => {
+                 return `<li><ul>${ele}</ul></li>`;
+               })
+             : `<p>Empty</p>`
+         }
         </div>
        </div>
        
@@ -45,14 +50,15 @@ fetch(`https://jsonplaceholder.typicode.com/users/1`)
 // CLASSES
 const classes = document.getElementById("classes");
 
-const bookClass = (classID) => {
-  fetch(`http://localhost:8585/bookClass/${classID}`)
+const bookClass = () => {
+  const classID = sessionStorage.getItem("classid");
+  fetch(`http://localhost:8585/user/bookClass/${classID}`)
     .then((res) => res.json())
     .then((data) => alert(data.message))
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err.message));
 };
 
-fetch(`http://localhost:8585/classes/users/${userID}`)
+fetch(`http://localhost:8585/classes`)
   .then((res) => res.json())
   .then(
     (data) =>
@@ -63,10 +69,13 @@ fetch(`http://localhost:8585/classes/users/${userID}`)
          ? data.classes.map(
              (ele) => ` <div class="individual_class">
         <p>${ele.title}</p>
-        <p>${ele.price}</p>
+        <p>Rs.${ele.price}</p>
         <p>${ele.activity}</p>
 
-            <button onclick=${bookClass(ele._id)}>Book</button>
+            <button ${sessionStorage.setItem(
+              "classid",
+              ele._id
+            )} onclick= "bookClass()" >Book</button>
           </div>`
            )
          : `<h2 class="message">Available Classes will be shown here</h2>`

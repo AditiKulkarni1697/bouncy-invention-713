@@ -59,19 +59,20 @@ button{
 /* classes */
 
 .classes_container{
-    width: 80%;
+    width: 90%;
     margin: auto;
     color: white;
 }
 
 .individual_class{
     display: grid;
-    grid-template-columns: 5fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 0.2fr 1fr;
     border: 2px solid blue;
     padding: 25px;
     margin: 10px;
-    
+    color: white;
     border-radius: 5px;
+    font-size: 20px;
 }
 
 .message{

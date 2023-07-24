@@ -1,5 +1,7 @@
 # FitMe - Fitness App
 
+<img src="https://64bd7d43624b4157fc66d549--snazzy-kleicha-a8dc9b.netlify.app/images/fitme.logo.png" />
+
 ### Team 
 - Aditi Sujlegaonkar
 - Prahlad Kushwah

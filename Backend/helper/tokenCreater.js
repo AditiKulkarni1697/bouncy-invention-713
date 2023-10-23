@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const {redisClient} = require ('../dataBase/redis')
+const {client} = require ('../dataBase/redis')
 require('dotenv').config()
 
 async function tokenCreator(obj){
@@ -7,10 +7,11 @@ async function tokenCreator(obj){
 
     let refresh_token = jwt.sign({ Client: obj._id,  name:obj.name}, process.env.refreshSecretKey, { expiresIn:"3d" });
 
-    await redisClient.hSet('token', obj.email, token)
-    await redisClient.hSet("refresh_token", obj.email, refresh_token)
+    
 
-    return {token, refresh_token}
+    await client.hSet('token', obj.email, token)
+
+    await client.hSet("refresh_token", obj.email, refresh_token)
 }
 
 module.exports = {tokenCreator}

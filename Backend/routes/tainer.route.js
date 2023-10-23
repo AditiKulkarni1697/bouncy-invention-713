@@ -1,55 +1,60 @@
 const express = require("express");
 const { UserModel, TrainerModel } = require("../models/user.model");
 const { ClassesModel } = require("../models/class.model");
-const { redisClient } = require("../dataBase/redis");
+const {client} = require("../dataBase/redis");
 const bcrypt = require("bcrypt");
 const { sendEmail, getEmailForOtp } = require("../mailer/mailer");
 const { tokenCreator } = require("../helper/tokenCreater");
 const jwt = require("jsonwebtoken");
 const trainerRouter = express.Router();
 
-trainerRouter.post("/otpverify", async (req, res) => {
-  try {
-    let userOtp = req.body.otp;
-    let user = req.body.user;
-    let correctOtp = await redisClient.get(user.email);
+// trainerRouter.post("/otpverify", async (req, res) => {
+//   try {
+//     let userOtp = req.body.otp;
+//     let user = req.body.user;
+//     let correctOtp = await redisClient.get(user.email);
 
-    if (userOtp == correctOtp && correctOtp) {
-      bcrypt.hash(
-        user.password,
-        process.env.saltRound,
-        async function (err, hash) {
-          if (err) {
-            console.log(err);
-            return res.status(401).send({
-              message: "Something went wrong",
-              error: err,
-              isOk: false,
-            });
-          } else {
-            let trainer = new TrainerModel({ ...user, password: hash });
-            await trainer.save();
-            res
-              .status(200)
-              .send({ message: "Trainer Registered", trainer, isOk: !false });
-          }
-        }
-      );
-    } else if (!correctOtp)
-      return res
-        .status(400)
-        .send({ message: "Otp Expired! try again", isOk: false });
-    else return res.status(400).send({ message: "invalid otp", isOk: false });
-  } catch (error) {
-    console.log(error);
-    return res
-      .status(400)
-      .send({ message: "somethin went wrong", error: error, isOk: false });
-  }
-});
+//     if (userOtp == correctOtp && correctOtp) {
+//       bcrypt.hash(
+//         user.password,
+//         process.env.saltRound,
+//         async function (err, hash) {
+//           if (err) {
+//             console.log(err);
+//             return res.status(401).send({
+//               message: "Something went wrong",
+//               error: err,
+//               isOk: false,
+//             });
+//           } else {
+//             let trainer = new TrainerModel({ ...user, password: hash });
+//             await trainer.save();
+//             res
+//               .status(200)
+//               .send({ message: "Trainer Registered", trainer, isOk: !false });
+//           }
+//         }
+//       );
+//     } else if (!correctOtp)
+//       return res
+//         .status(400)
+//         .send({ message: "Otp Expired! try again", isOk: false });
+//     else return res.status(400).send({ message: "invalid otp", isOk: false });
+//   } catch (error) {
+//     console.log(error);
+//     return res
+//       .status(400)
+//       .send({ message: "somethin went wrong", error: error, isOk: false });
+//   }
+// });
 
 trainerRouter.post("/register", async (req, res) => {
-  let { name, email } = req.body;
+  let { name,
+    email,
+    phone,
+    city,
+    password,
+    gender } = req.body;
   try {
     if(name == "" || email == "") return res.status(401).send({ message: "Something went wrong", isOk: false });
     let trainer = await TrainerModel.find({ email });
@@ -58,12 +63,22 @@ trainerRouter.post("/register", async (req, res) => {
         .status(400)
         .send({ message: "trainer already registered", isOk: false });
     } else {
-      let Email = getEmailForOtp(name);
-      redisClient.setEx(email, 300, Email.otp + "");
-      sendEmail(email, Email.otpSubject, Email.otpContent);
-      return res
-        .status(200)
-        .send({ message: "otp send successfully to given email", isOk: true });
+      bcrypt.hash(password, 8, async function (err, hash) {
+        if (err) {
+          console.log(err, otp);
+          return res
+            .status(401)
+            .send({ message: "Something went wrong", error: err, isOk: false });
+        }
+        else {
+          const trainer = new TrainerModel({ name, email, phone, city, password: hash, gender });
+          await trainer.save();
+          console.log(trainer);
+          res
+            .status(200)
+            .send({ message: "Registered successfully", isOk: true });
+        }
+      })
     }
 
 }

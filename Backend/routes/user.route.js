@@ -1,6 +1,6 @@
 const express = require("express");
 const userRoute = express.Router();
-const { redisClient } = require("../dataBase/redis");
+const {client} = require("../dataBase/redis");
 const { UserModel, TrainerModel } = require("../models/user.model");
 const {
   getEmailForOtp,
@@ -14,41 +14,41 @@ const { ClassesModel } = require("../models/class.model");
 const { PaymentModel } = require("../models/payment.model");
 
 
-userRoute.post("/otpverify", async (req, res) => {
-  try {
-    let userOtp = req.body.otp;
-    let User = req.body.user;
-    let correctOtp = await redisClient.get(req.body.user.email);
+// userRoute.post("/otpverify", async (req, res) => {
+//   try {
+//     let userOtp = req.body.otp;
+//     let User = req.body.user;
+//     let correctOtp = await redisClient.get(req.body.user.email);
 
-    if (userOtp == correctOtp && correctOtp) {
-      bcrypt.hash(User.password, 8, async function (err, hash) {
-        if (err) {
-          console.log(err, otp);
-          return res
-            .status(401)
-            .send({ message: "Something went wrong", error: err, isOk: false });
-        } else {
-          const user = new UserModel({ ...User, password: hash });
-          await user.save();
-          console.log(user);
-          return res.status(200).send({
-            message: "Registration successfull",
-            newUser: user,
-            isOk: true,
-          });
-        }
-      });
-    } else if (!correctOtp)
-      return res
-        .status(400)
-        .send({ isOk: false, message: "Otp Expired! try again" });
-    else return res.status(400).send({ message: "invalid otp", isOk: false });
-  } catch (error) {
-    return res
-      .status(400)
-      .send({ message: "something went wrong", error: error, isOk: false });
-  }
-});
+//     if (userOtp == correctOtp && correctOtp) {
+//       bcrypt.hash(User.password, 8, async function (err, hash) {
+//         if (err) {
+//           console.log(err, otp);
+//           return res
+//             .status(401)
+//             .send({ message: "Something went wrong", error: err, isOk: false });
+//         } else {
+//           const user = new UserModel({ ...User, password: hash });
+//           await user.save();
+//           console.log(user);
+//           return res.status(200).send({
+//             message: "Registration successfull",
+//             newUser: user,
+//             isOk: true,
+//           });
+//         }
+//       });
+//     } else if (!correctOtp)
+//       return res
+//         .status(400)
+//         .send({ isOk: false, message: "Otp Expired! try again" });
+//     else return res.status(400).send({ message: "invalid otp", isOk: false });
+//   } catch (error) {
+//     return res
+//       .status(400)
+//       .send({ message: "something went wrong", error: error, isOk: false });
+//   }
+// });
 
 userRoute.get("/", async (req, res) => {
   try {
@@ -78,9 +78,17 @@ userRoute.get("/:userID", async (req, res) => {
 });
 
 userRoute.post("/register", async (req, res) => {
-  let { name, email } = req.body;
+  let { name,
+    email,
+    phone,
+    height,
+    weight,
+    city,
+    password,
+    gender,
+    age } = req.body;
   try {
-    if(name == "" || email == "") return res.status(401).send({ message: "Something went wrong", isOk: false });
+    if (name == "" || email == "") return res.status(401).send({ message: "Something went wrong", isOk: false });
 
     let user = await UserModel.find({ email });
     if (user.length !== 0) {
@@ -88,13 +96,30 @@ userRoute.post("/register", async (req, res) => {
         .status(400)
         .send({ message: "user already registered", isOk: false });
     } else {
-      let Email = getEmailForOtp(name);
-      redisClient.setEx(email, 300, Email.otp + "");
-      sendEmail(email, Email.otpSubject, Email.otpContent);
-      return res.status(200).send({
-        message: "otp send successfully to given email",
-        isOk: !false,
-      });
+      bcrypt.hash(password, 8, async function (err, hash) {
+        if (err) {
+          console.log(err, otp);
+          return res
+            .status(401)
+            .send({ message: "Something went wrong", error: err, isOk: false });
+        }
+        else {
+          const user = new UserModel({ name,
+            email,
+            phone,
+            height,
+            weight,
+            city,
+            password:hash,
+            gender,
+            age });
+          await user.save();
+          console.log(user);
+          res
+            .status(200)
+            .send({ message: "Registered successfully", isOk: true });
+        }
+      })
     }
   } catch (error) {
     return res
@@ -108,6 +133,7 @@ userRoute.post("/login", async (req, res) => {
   // console.log(req.body,'egsthegf')
   try {
     let user = await UserModel.find({ email });
+    console.log(user)
     if (user.length == 0) {
       return res.status(400).send({ message: "User not found", isOk: false });
     } else {
@@ -125,7 +151,7 @@ userRoute.post("/login", async (req, res) => {
         } else {
           return res
             .status(401)
-            .send({ message: "Wrong Credientials", isOk: false });
+            .send({ error:err, message: "Wrong Credientials", isOk: false });
         }
       });
     }
@@ -169,41 +195,41 @@ userRoute.delete("/delete/:id", async (req, res) => {
 
 
 userRoute.post('/bookClass/:classID', async (req, res) => {
-   let classID = req.params?.classID
-    let user = req.body.user
-      try {
+  let classID = req.params?.classID
+  let user = req.body.user
+  try {
     let Class = await ClassesModel.findById(classID)
-    if(Class.seatOccupied == Class.seatTotal) {
-        return res.status(400).send({message : "no seats avaible" , isOk : false})
+    if (Class.seatOccupied == Class.seatTotal) {
+      return res.status(400).send({ message: "no seats avaible", isOk: false })
     }
 
     let updatedClass = await ClassesModel.findByIdAndUpdate(
       { _id: classID },
       { $push: { users: user._id }, $inc: { seatOccupied: 1 } },
-      { new: true } 
+      { new: true }
     );
 
-    let payment = new PaymentModel({userID : user._id, classID :classID,     cardDetails : JSON.stringify(req.body.card)})
+    let payment = new PaymentModel({ userID: user._id, classID: classID, cardDetails: JSON.stringify(req.body.card) })
     await payment.save()
-      
+
 
     let x = await PaymentModel.find()
     console.log(x)
 
-      let usermail   = getEmailForBookInfo({Class, user})
-      let trainermail = getOtpForUserInfo({Class, user})
-  
-      sendEmail(user.email, usermail.otpSubject, usermail.otpContent)
-  
-      sendEmail (Class.trainerEmail, trainermail.otpSubject, trainermail.otpContent)
-  
-      return res.status(200).send({ message: "Class booked successfully" , ClassDetails : updatedClass, isOk :true, payment : x});
-} catch (error) {
-  console.log(error)
+    let usermail = getEmailForBookInfo({ Class, user })
+    let trainermail = getOtpForUserInfo({ Class, user })
+
+    sendEmail(user.email, usermail.otpSubject, usermail.otpContent)
+
+    sendEmail(Class.trainerEmail, trainermail.otpSubject, trainermail.otpContent)
+
+    return res.status(200).send({ message: "Class booked successfully", ClassDetails: updatedClass, isOk: true, payment: x });
+  } catch (error) {
+    console.log(error)
     res
-        .status(400)
-        .send({ message: "Something went wrong", error: error, isOk: false });
-}
+      .status(400)
+      .send({ message: "Something went wrong", error: error, isOk: false });
+  }
 })
 
 

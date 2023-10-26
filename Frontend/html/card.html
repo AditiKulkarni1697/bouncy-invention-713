@@ -305,7 +305,7 @@
 
 
         function getCarddetails(){
-            fetch(`https://elegant-tunic-frog.cyclic.app/payment/${client._id}`)
+            fetch(`https://fitme-2.onrender.com/payment/${client._id}`)
             .then(res=> res.json())
             .then((data) => {
                 console.log(data)
@@ -334,7 +334,7 @@
         let classID = params.get("classId")
 
 
-        fetch(`https://elegant-tunic-frog.cyclic.app/classes/${classID}`)
+        fetch(`https://fitme-2.onrender.com/classes/${classID}`)
         .then(res=> res.json())
         .then(data => {
             console.log(data)
@@ -363,7 +363,7 @@
             }
             console.log(obj)
 
-            fetch(`https://elegant-tunic-frog.cyclic.app/user/bookClass/${classID}`, {
+            fetch(`https://fitme-2.onrender.com/user/bookClass/${classID}`, {
 
                 method : "POST", 
                 headers : {

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-signin-client_id" content="1015728966421-8f5ic27vv28emostad0gns32rrn3shas.apps.googleusercontent.com">
     <title>Fit-Me | Register</title>
     <style>
         body{
@@ -43,10 +44,21 @@
         }
 
         #registerBtn{
+            font-size: 16px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
             border-radius: 7px;
             margin: 2s0px 10px 30px 10px;
             border: 1px solid rgb(32, 68, 247);
             background-color: rgb(32, 68, 247);
+        }
+
+        #google_auth{
+            text-align: center;
+            border-radius: 7px;
+            margin: 2s0px 10px 30px 10px;
+            border: 1px solid rgb(247, 82, 32);
+            background-color: rgb(247, 54, 32);
+            padding: 8px;
         }
 
         #registerBtn:hover {
@@ -153,6 +165,10 @@
         .r {
             display: none;
         }
+        #or{
+            text-align: center;
+            margin-top: -5px;
+        }
     </style>
 </head>
 
@@ -163,6 +179,8 @@
                 <img src="../image/fitme.logo.png" alt="FIT-ME">
                 <h2> - Welcome to Fit-me -</h2>
             </div>
+           
+
             <p>NAME</p>
             <input type="text" id="registerName" placeholder="Enter Your Name" >
             <p>EMAIL</p>
@@ -196,17 +214,22 @@
             <p>CONFIRM PASSWORD</p>
             <input type="password" id="registerPass2" placeholder="Confrim Password" >
             <p>Show password  <input type="checkbox"  id="show"></p>
-            <input type="number" class="otpi" id="otpEnter" placeholder="Enter Your Otp">
-            <button class="otpb" id="otpbtn" >Get Otp</button>
-            <Button class="r" id="registerBtn">Register</Button>
+            <!-- <input type="number" class="otpi" id="otpEnter" placeholder="Enter Your Otp"> -->
+            <!-- <button class="otpb" id="otpbtn" >Get Otp</button> -->
+            <Button id="registerBtn">Register</Button>
             <div>
+                <!-- <h3 id="or" >OR</h3>
+        <div class="g-signin2" data-onsuccess="onSignIn" id="google_auth">Google Sign In</div> -->
                 <p>
                     Already have an accound ? <span onclick="switchLogin()" class="lr">Login</span>
                 </p>
             </div>
         </div>
+        
     </div>
     
+
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
@@ -235,116 +258,114 @@
     let registerbtn = document.querySelector('#registerBtn')
 
     //otp button
-    let otpbtn = document.getElementById('otpbtn')
-    let otpInp = document.getElementById('otpEnter')
+    // let otpbtn = document.getElementById('otpbtn')
+    // let otpInp = document.getElementById('otpEnter')
 
 
-    let showbtn = document.getElementById('show')
-    show.addEventListener('click',(e)=>{
-        (e.target.checked)? registerPass1Inp.setAttribute('type', 'text') :registerPass1Inp.setAttribute('type', 'password')
-    } )
+    // let showbtn = document.getElementById('show')
+    // show.addEventListener('click',(e)=>{
+    //     (e.target.checked)? registerPass1Inp.setAttribute('type', 'text') :registerPass1Inp.setAttribute('type', 'password')
+    // } )
 
 
-    const url = `https://elegant-tunic-frog.cyclic.app`
+    const url = `https://fitme-2.onrender.com`
     
     if(client == "trainer"){
         document.querySelector('.height').style.display = 'none'
     }
 
-    otpbtn.addEventListener('click', ()=>{
-        let email = registerEmailInp.value;
-        let password = registerPass1Inp.value;
-        let pass2 = registerPass2.value;
-        let name = registerNameInp.value
-        let flag = true;
+    // otpbtn.addEventListener('click', ()=>{
+    //     let email = registerEmailInp.value;
+    //     let password = registerPass1Inp.value;
+    //     let pass2 = registerPass2.value;
+    //     let name = registerNameInp.value
+    //     let flag = true;
 
-        if (password != pass2) {
-            flag = false;
-            Swal.fire({
-                icon : 'error',
-                title : "Oops",
-                text : "Password doesn't match!"
-            });
-            return
-        }
+    //     if (password != pass2) {
+    //         flag = false;
+    //         Swal.fire({
+    //             icon : 'error',
+    //             title : "Oops",
+    //             text : "Password doesn't match!"
+    //         });
+    //         return
+    //     }
 
-        if (flag && client == 'user') {
-            let userObj = {
-                name,
-                email
-            };
+    //     if (flag && client == 'user') {
+    //         let userObj = {
+    //             name,
+    //             email
+    //         };
 
-            fetch(`${url}/user/register`, {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json",
-                },
-                body: JSON.stringify(userObj),
-            })
-                .then((res) => res.json())
-                .then((res) => {
-                    Swal.fire({
-                        icon : (res.isOk)? "success" : 'error',
-                        title :(res.isOk)? "Otp Successful Sent" : "Something went wrong",
-                        text : res.message
-                    })
-                    if(res.isOk) showDis()
-                })
-                .catch((err) => {
-                    Swal.fire({
-                        icon : 'error',
-                        title : "Error",
-                        text : "Somthing Went Wrong"
-                    })
-                    console.log(err)
-                });
-        }
-        else {
-            let userObj = {
-                email,
-                password,
-            };
+    //         fetch(`${url}/user/register`, {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-type": "application/json",
+    //             },
+    //             body: JSON.stringify(userObj),
+    //         })
+    //             .then((res) => res.json())
+    //             .then((res) => {
+    //                 Swal.fire({
+    //                     icon : (res.isOk)? "success" : 'error',
+    //                     title :(res.isOk)? "Registration Successful" : "Something went wrong",
+    //                     text : res.message
+    //                 })
+    //                // if(res.isOk) showDis()
+    //             })
+    //             .catch((err) => {
+    //                 Swal.fire({
+    //                     icon : 'error',
+    //                     title : "Error",
+    //                     text : "Somthing Went Wrong"
+    //                 })
+    //                 console.log(err)
+    //             });
+    //     }
+    //     else {
+    //         let userObj = {
+    //             email,
+    //             password,
+    //         };
 
-            fetch(`${url}/trainer/register`, {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json",
-                },
-                body: JSON.stringify(userObj),
-            })
-                .then((res) => res.json())
-                .then((res) => {
-                    Swal.fire({
-                        icon : (res.isOk)? "success" : 'error',
-                        title :(res.isOk)? "Otp Successful Sent" : "Something went wrong",
-                        text : res.message
-                    })
-                    if(res.isOk) showDis()
-                })
-                .catch((err) => {
-                    Swal.fire({
-                        icon : 'error',
-                        title : "Error",
-                        text : "Somthing Went Wrong"
-                    })
-                    console.log(err)
-                });
-            }
+    //         fetch(`${url}/trainer/register`, {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-type": "application/json",
+    //             },
+    //             body: JSON.stringify(userObj),
+    //         })
+    //             .then((res) => res.json())
+    //             .then((res) => {
+    //                 Swal.fire({
+    //                     icon : (res.isOk)? "success" : 'error',
+    //                     title :(res.isOk)? "Otp Successful Sent" : "Something went wrong",
+    //                     text : res.message
+    //                 })
+    //                 if(res.isOk) showDis()
+    //             })
+    //             .catch((err) => {
+    //                 Swal.fire({
+    //                     icon : 'error',
+    //                     title : "Error",
+    //                     text : "Somthing Went Wrong"
+    //                 })
+    //                 console.log(err)
+    //             });
+    //         }
         
-    })
+    // })
 
 
-    function showDis(){
-        otpInp.style.display = 'block'
-        registerbtn.style.display ='block'
-        otpbtn.style.display = 'none'
-    }
+    // function showDis(){
+    //     otpInp.style.display = 'block'
+    //     registerbtn.style.display ='block'
+    //     otpbtn.style.display = 'none'
+    // }
 
     registerbtn.addEventListener('click', ()=>{
         if(client == 'user'){
-            let userObj = {
-                otp  : otpInp.value,
-                user : {
+            let user ={
                     name : registerNameInp.value,
                     email : registerEmailInp.value,
                     phone : registerMobileInp.value,
@@ -355,14 +376,14 @@
                     gender : registerUserGenderInp.value,
                     age  : registerAgeInp.value
                 }
-            }
+            
 
-            fetch(`${url}/user/otpverify`, {
+            fetch(`${url}/user/register`, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
                 },
-                body: JSON.stringify(userObj),
+                body: JSON.stringify(user),
             }).then((res) => res.json())
                 .then((res) => {
                     
@@ -394,10 +415,9 @@
                     console.log(err)
                 });
         }
+    
         else{
-            userObj = {
-                otp  : otpInp.value,
-                user : {
+          let trainer = {
                     name : registerNameInp.value,
                     email : registerEmailInp.value,
                     phone : registerMobileInp.value,
@@ -405,14 +425,14 @@
                     password : registerPass2Inp.value,
                     gender : registerUserGenderInp.value,
                 }
-            }
+            
 
-            fetch(`${url}/trainer/otpverify`, {
+            fetch(`${url}/trainer/register`, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
                 },
-                body: JSON.stringify(userObj),
+                body: JSON.stringify(trainer),
             })
                 .then((res) => res.json())
                 .then((res) => {

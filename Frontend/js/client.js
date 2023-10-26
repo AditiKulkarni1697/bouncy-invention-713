@@ -1,6 +1,22 @@
 // USER DETAILS
+
+
+const query = window.location.search.substring(1); // Exclude the leading "?"
+const queryParams = new URLSearchParams(query);
+
+// Access individual query parameters
+const google_user = queryParams.get("data");
+
+// console.log(queryParams)
+// console.log(`param1: ${param1}`);
+
+
+
 let user = JSON.parse(sessionStorage.getItem('logedClient'))
 
+if(google_user){
+  user = JSON.parse(google_user)
+}
 
 let logoutbtn = document.getElementById('logout')
 logoutbtn.addEventListener('click',()=>{ 
@@ -9,14 +25,20 @@ logoutbtn.addEventListener('click',()=>{
 })
 
 if(!user) {
-  window.location.href = `../index.html`
+  // window.location.href = `../index.html`     
+  console.log(user)
+ // getData()
 
 }else{
+  console.log(user)
+  console.log(user.name)
+  console.log(user["_id"])
+  user["_id"] = user["_id"].toString();
   getData()
 }
 
 function getData(){
-  fetch('https://elegant-tunic-frog.cyclic.app/user/'+user._id)
+  fetch('https://fitme-2.onrender.com/user/'+user._id)
   .then(res =>res.json())
   .then(data => {
     user = data.user;
@@ -99,7 +121,7 @@ function switchLogout(){
 }
 
 function BookClass(){
-  fetch(`https://elegant-tunic-frog.cyclic.app/classes`)
+  fetch(`https://fitme-2.onrender.com/classes`)
   .then(res => res.json())
   .then(data => {
 
@@ -117,7 +139,7 @@ function BookClass(){
 
 function showOwnClass(){
   
-  fetch(`https://elegant-tunic-frog.cyclic.app/classes/users/${user._id}`)
+  fetch(`https://fitme-2.onrender.com/classes/users/${user._id}`)
   .then(res => res.json())
   .then(data => {
 

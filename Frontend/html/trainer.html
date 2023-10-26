@@ -1,58 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trainer | FitMe</title>
 
-    <link rel="stylesheet" href="../css/trainer.css" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trainer | FitMe</title>
 
-  </head>
-  <body>
-    <nav class="nav">
-      <div class="logo">
-        <img src="../images/fitme.logo.png" width="80px" alt="fitme_logo" />
-      </div>
+  <link rel="stylesheet" href="../css/trainer.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<style>
+  body{
+    background-color: black;
+  }
+  .modal{
+    width : 600px;
+  height : 800px;
+  margin-left :500px;
+  margin-top : -80px;
+  color: white;
+  overflow : hidden;
+  line-height :1rem;
+  }
+  .modal-content p{
+    margin: 5px;
 
-      <div id="options"><p class="inner_div" id="home">Home</p>
-        <p class="inner_div" id="service">Services</p>
-        <p class="inner_div" id="logout">Logout</p></div>
+  }
+  .modal-content input{
+    padding: 2px;
 
-    </nav>
-    <main>
-      <div class="container">
-        <div id="trainer_details"></div>
+  }
+</style>
+</head>
 
-        <div id="classdetails">
-          <div class="create-class-container">
-            <button id="createBtn">Create Class</button>
-          </div>
-          <div class="class-details-container">
-            <div class="class-form-container" id="classFormContainer">
-              <!-- Class details form will be appended here -->
-            </div>
-          </div>
-         <div id="classes"></div> 
-         
-          
+<body>
+  <nav class="nav">
+    <div class="logo">
+      <img src="../images/fitme.logo.png" width="80px" alt="fitme_logo" />
+    </div>
+
+    <div id="options">
+      <p class="inner_div" id="home">Home</p>
+      <p class="inner_div" id="service">Services</p>
+      <p class="inner_div" id="logout">Logout</p>
+    </div>
+
+  </nav>
+  <main>
+    <div class="container">
+      <div id="trainer_details"></div>
+
+      <div id="classdetails">
+        <div class="create-class-container">
+          <button id="createBtn">Create Class</button>
         </div>
+        <div class="class-details-container">
+          <div class="class-form-container" id="classFormContainer">
+            <!-- Class details form will be appended here -->
+          </div>
         </div>
-      </div>
-    </main>
-    <footer>
-      <div class="footer">
-        <div>Home</div>
-        <div>Services</div>
-        <div>Gallery</div>
-        <div>About</div>
-        <div>Contact Us</div>
-      </div>
-    </footer>
+        <div id="classes"></div>
 
-    
-  </body>
+        
+
+
+      </div>
+    </div>
+    </div>
+  </main>
+  <footer>
+    <div class="footer">
+      <div>Home</div>
+      <div>Services</div>
+      <div>Gallery</div>
+      <div>About</div>
+      <div>Contact Us</div>
+    </div>
+  </footer>
+
+
+</body>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-  <script src="../js/trainer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="../js/trainer.js"></script>
 
 </html>

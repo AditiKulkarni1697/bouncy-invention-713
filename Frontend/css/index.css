@@ -15,6 +15,13 @@ button{
     background-color: blue;
     border: none;
 }
+
+#header{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+
+}
+
 .heading{
     color: white;
     text-align: center;
@@ -33,7 +40,7 @@ button{
 .nav{
     padding:  0 40px;
     display: flex;
-    justify-content: space-between;
+    justify-content:flex-end;
     width: 100%;
     align-items: center;
     background-color: black;
@@ -44,6 +51,31 @@ button{
     display: flex;
     justify-content: space-evenly;
     
+}
+
+#hamburger-menu{
+    display: none;
+    
+}
+
+#nav-menu2{
+    display: none;
+    position: absolute;
+    z-index: 1;
+    top: 80px;
+    left: 400px;
+    padding: 5px;
+}
+
+.bar{
+    display: block;
+  width: 25px;
+  height: 3px;
+  margin: 5px auto;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  background-color: blue;
+
 }
 
 #options{
@@ -60,13 +92,13 @@ button{
 /* changesend */
 
 /* Why_Choose_US */
-.choose{
+#choose{
     display: grid;
     grid-template-columns: 1fr 1fr;
     background-color: black;
     color: white;
 }
-.choose>div{
+#choose>div{
     
     padding: 50px;
     text-align: center;
@@ -119,25 +151,29 @@ button{
 
 /* choose_text */
 
-.choose>div:last-child{
+#choose>div:last-child{
     display: grid;
     grid-template-rows: 2fr 5fr ;
     text-align: left;
     font-size: 18px;
     background-color: black;
 }
-.choose>div:last-child>div>h1{
+#choose>div:last-child>div>h1{
     padding-bottom: 15px;
 }
 
 /* services */
+
+#our-services{
+    margin-top: 30px;
+}
 
 .services{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     width: 80%;
     margin: auto;
-    margin-top: 20px;
+    margin-top: 50px;
 }
 
 .services>div{
@@ -238,4 +274,32 @@ button{
 }
 .footer div{
     padding-left: 50px;
+}
+
+
+
+@media (max-width: 767px) {
+    #hamburger-menu {
+      display: block;
+      
+    }
+    #nav {
+        display: none;
+    }
+    #header{
+        
+        grid-template-columns: 4fr 1fr;
+        align-items: center;
+    
+    }
+
+    #choose{
+       padding: 5px;
+    }
+
+    #choose>div:last-child{
+        display: grid;
+        grid-template-rows: 0fr 1fr ;
+        text-align: center;
+    }
 }

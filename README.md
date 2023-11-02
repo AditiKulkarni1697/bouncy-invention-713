@@ -27,7 +27,6 @@ FitMe is a web-based fitness application that allows trainers to create and mana
 
 - Trainers can register and create their profile.
 - Clients can register and create their profile.
-- Registration requires email verification using OTP.
 - Trainers can create and manage fitness classes.
 - Clients can view available classes and book them.
 - Clients can purchase classes using their card details.

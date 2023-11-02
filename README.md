@@ -6,7 +6,8 @@
 - Aditi Sujlegaonkar
 - Prahlad Kushwah
 
-  Netlify Link - https://64bd7d43624b4157fc66d549--snazzy-kleicha-a8dc9b.netlify.app/
+  Netlify Link - https://splendorous-medovik-fa5d80.netlify.app/
+
 
 FitMe is a web-based fitness application that allows trainers to create and manage fitness classes and enables clients to purchase and book these classes. The app is built using a combination of HTML, CSS, JS, Bootstrap for the frontend, and Express, MongoDB, JWT, and Nodemailer for the backend.
 
